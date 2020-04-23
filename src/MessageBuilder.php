@@ -11,8 +11,15 @@ use Psr\Http\Message\MessageInterface;
 class MessageBuilder
 {
 
+    /**
+     * @var string
+     */
+    private $service;
+
     public function build(): MessageInterface
     {
+        $service = explode('/', $this->service);
+
         // source of response sample: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $body = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
@@ -29,12 +36,12 @@ class MessageBuilder
             <id:subsystemCode>SUBSYSTEM1</id:subsystemCode>
         </xrd:client>
         <xrd:service id:objectType="SERVICE">
-            <id:xRoadInstance>EE</id:xRoadInstance>
-            <id:memberClass>GOV</id:memberClass>
-            <id:memberCode>MEMBER2</id:memberCode>
-            <id:subsystemCode>SUBSYSTEM2</id:subsystemCode>
-            <id:serviceCode>exampleService</id:serviceCode>
-            <id:serviceVersion>v1</id:serviceVersion>
+            <id:xRoadInstance>{$service[0]}</id:xRoadInstance>
+            <id:memberClass>{$service[1]}</id:memberClass>
+            <id:memberCode>{$service[2]}</id:memberCode>
+            <id:subsystemCode>{$service[3]}</id:subsystemCode>
+            <id:serviceCode>{$service[4]}</id:serviceCode>
+            <id:serviceVersion>{$service[5]}</id:serviceVersion>
         </xrd:service>
         <xrd:id>4894e35d-bf0f-44a6-867a-8e51f1daa7e0</xrd:id>
         <xrd:userId>EE12345678901</xrd:userId>
@@ -57,13 +64,20 @@ EOD;
             );
     }
 
-    public static function create(): self
+    public function withService(string $service): self
     {
-        return new self();
+        return new self(
+            $service
+        );
     }
 
-    private function __construct()
+    public static function create(): self
     {
+        return new self('/////');
+    }
 
+    private function __construct(string $service)
+    {
+        $this->service = $service;
     }
 }
