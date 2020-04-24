@@ -6,12 +6,29 @@ use Psr\Http\Message\StreamInterface;
 
 final class SoapEnvelopeBuilder
 {
+    /**
+     * @var string
+     */
+    private $service;
+
+    /**
+     * Clone builder and replace service
+     *
+     * @param string $service encoded service.
+     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}/{serviceCode}/{serviceVerson}
+     *                   Example: EE/GOV/70000310/DHX.Riigi-Teataja/sendDocument/v1
+     * @return self cloned builder with overwritten service data
+     */
+    public function withService(string $service): self
+    {
+        return new self($service);
+    }
+
     public function build(): StreamInterface
     {
-        //$service = explode('/', $this->service);
-        $service = ['EE', 'COM', '00000000', 'SYS', 'method', 'v0'];
+        $service = explode('/', $this->service);
 
-        // source of response sample: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
+        // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $body = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope
@@ -54,10 +71,11 @@ EOD;
 
     public static function create(): self
     {
-        return new self();
+        return new self('/////');
     }
 
-    private function __construct()
+    private function __construct(string $service)
     {
+        $this->service = $service;
     }
 }
