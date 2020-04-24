@@ -5,21 +5,9 @@ namespace Raigu\XRoad;
 final class SoapEnvelopeBuilder
 {
     /**
-     * @var string
+     * @var XmlInjectable[]
      */
-    private $service;
-    /**
-     * @var string
-     */
-    private $body;
-    /**
-     * @var string
-     */
-    private $client;
-    /**
-     * @var string
-     */
-    private $userId;
+    private $elements;
 
     /**
      * Clone builder and replace service in SOAP header
@@ -31,7 +19,10 @@ final class SoapEnvelopeBuilder
      */
     public function withService(string $service): self
     {
-        return new self($service, $this->client, $this->body, $this->userId);
+        $elements = $this->elements;
+        $elements[0] = new Service($service);
+
+        return new self(...$elements);
     }
 
     /**
@@ -44,7 +35,10 @@ final class SoapEnvelopeBuilder
      */
     public function withClient(string $client): self
     {
-        return new self($this->service, $client, $this->body, $this->userId);
+        $elements = $this->elements;
+        $elements[1] = new Client($client);
+
+        return new self(...$elements);
     }
 
      /**
@@ -57,7 +51,10 @@ final class SoapEnvelopeBuilder
      */
     public function withUserId(string $userId): self
     {
-        return new self($this->service, $this->client, $this->body, $userId);
+        $elements = $this->elements;
+        $elements[3] = new UserId($userId);
+
+        return new self(...$elements);
     }
 
     /**
@@ -67,66 +64,60 @@ final class SoapEnvelopeBuilder
      */
     public function withBody(string $body): self
     {
-        return new self($this->service, $this->client, $body, $this->userId);
+        $elements = $this->elements;
+        $elements[2] = new BodyContent($body);
+
+        return new self(...$elements);
     }
 
     public function build(): string
     {
-        $service = explode('/', $this->service);
-        $client = explode('/', $this->client);
         $id = bin2hex(random_bytes(16));
-        $userIdTag = empty($this->userId) ? '' : '<xrd:userId>'.$this->userId.'</xrd:userId>';
 
-        // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope
-        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
-        xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
-        xmlns:id="http://x-road.eu/xsd/identifiers">
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+                   xmlns:id="http://x-road.eu/xsd/identifiers"
+                   xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
     <SOAP-ENV:Header>
-        <xrd:client id:objectType="SUBSYSTEM">
-            <id:xRoadInstance>{$client[0]}</id:xRoadInstance>
-            <id:memberClass>{$client[1]}</id:memberClass>
-            <id:memberCode>{$client[2]}</id:memberCode>
-            <id:subsystemCode>{$client[3]}</id:subsystemCode>
-        </xrd:client>
-        <xrd:service id:objectType="SERVICE">
-            <id:xRoadInstance>{$service[0]}</id:xRoadInstance>
-            <id:memberClass>{$service[1]}</id:memberClass>
-            <id:memberCode>{$service[2]}</id:memberCode>
-            <id:subsystemCode>{$service[3]}</id:subsystemCode>
-            <id:serviceCode>{$service[4]}</id:serviceCode>
-            <id:serviceVersion>{$service[5]}</id:serviceVersion>
-        </xrd:service>
         <xrd:id>{$id}</xrd:id>
-        {$userIdTag}
-        <xrd:issue>12345</xrd:issue>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
-        {$this->body} 
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 EOD;
 
-        return $envelope;
+        $dom = new \DOMDocument();
+        $dom->loadXML($envelope);
+
+        foreach ($this->elements as $element) {
+            $element->inject($dom);
+        }
+
+        return $dom->saveXML();
     }
 
     public static function create(): self
     {
-        return new self('/////', '///', '', '');
+        return new self(
+            new UnInitialized('Service not initialized'),
+            new UnInitialized('Client not initialized'),
+            new UnInitialized('Body not initialized'),
+            new None
+        );
     }
 
-    public static function stub(): self {
-        return new self('/////', '///', '', '');
-    }
-
-    private function __construct(string $service, string $client, string $body, string $userId)
+    public static function stub(): self
     {
-        $this->service = $service;
-        $this->body = $body;
-        $this->client = $client;
-        $this->userId = $userId;
+        return self::create()
+            ->withService('EE/COM/11111111/PROVIDER_SYS/provider_method/v99')
+            ->withClient('EE/COM/22222222/CLIENT_SYS')
+            ->withBody('<stub xmlns="https://stub.ee"></stub>');
+    }
+
+    private function __construct(XmlInjectable ...$elements)
+    {
+        $this->elements = $elements;
     }
 }
