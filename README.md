@@ -25,7 +25,7 @@ $builder = SoapEnvelopeBuilder::create()
 
 $envelope = $builder->build();
 
-echo strval($envelope);
+echo $envelope;
 ```
 
 ## Usage with Guzzle
