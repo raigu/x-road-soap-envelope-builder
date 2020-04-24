@@ -118,6 +118,10 @@ EOD;
         return new self('/////', '///', '', '');
     }
 
+    public static function stub(): self {
+        return new self('/////', '///', '', '');
+    }
+
     private function __construct(string $service, string $client, string $body, string $userId)
     {
         $this->service = $service;

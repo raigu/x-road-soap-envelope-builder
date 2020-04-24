@@ -10,7 +10,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function builds_instance_containing_valid_SOAP_envelope_xml()
     {
-        $envelope = SoapEnvelopeBuilder::create()->build();
+        $envelope = SoapEnvelopeBuilder::stub()->build();
 
         $dom = new \DOMDocument;
         $dom->loadXML($envelope);
@@ -24,7 +24,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function adds_service_into_SOAP_envelope()
     {
-        $envelope = SoapEnvelopeBuilder::create()
+        $envelope = SoapEnvelopeBuilder::stub()
             ->withService('EE/COM/00000000/SYS/method/v0')
             ->build();
 
@@ -64,7 +64,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function adds_client_into_SOAP_envelope()
     {
-        $envelope = SoapEnvelopeBuilder::create()
+        $envelope = SoapEnvelopeBuilder::stub()
             ->withClient('EE/COM/00000000/SYS')
             ->build();
 
@@ -98,7 +98,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function adds_userId_into_SOAP_envelope()
     {
-        $envelope = SoapEnvelopeBuilder::create()
+        $envelope = SoapEnvelopeBuilder::stub()
             ->withUserId(
                 $expected = 'EE00000000000'
             )
@@ -123,7 +123,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function adds_body_into_SOAP_envelope()
     {
-        $envelope = SoapEnvelopeBuilder::create()
+        $envelope = SoapEnvelopeBuilder::stub()
             ->withBody(
                 $expected = '<stub xmlns="http://stub.ee"></stub>'
             )
@@ -152,7 +152,7 @@ final class SoapEnvelopeBuilderTest extends TestCase
      */
     public function generates_unique_id_for_every_built_envelope()
     {
-        $builder = SoapEnvelopeBuilder::create();
+        $builder = SoapEnvelopeBuilder::stub();
 
         $envelope1 = $builder->build();
         $envelope2 = $builder->build();
