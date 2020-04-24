@@ -8,6 +8,10 @@ final class SoapEnvelopeBuilder
      * @var string
      */
     private $service;
+    /**
+     * @var string
+     */
+    private $body;
 
     /**
      * Clone builder and replace service
@@ -19,7 +23,17 @@ final class SoapEnvelopeBuilder
      */
     public function withService(string $service): self
     {
-        return new self($service);
+        return new self($service, $this->body);
+    }
+
+    /**
+     * Clone builder and replace SOAP body
+     * @param string $body content of SOAP Body tag.
+     * @return self
+     */
+    public function withBody(string $body): self
+    {
+        return new self($this->service, $body);
     }
 
     public function build(): string
@@ -27,11 +41,10 @@ final class SoapEnvelopeBuilder
         $service = explode('/', $this->service);
 
         // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
-        $body = <<<EOD
+        $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope
         xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
-        xmlns:ns1="http://producer.x-road.eu"
         xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
         xmlns:id="http://x-road.eu/xsd/identifiers">
     <SOAP-ENV:Header>
@@ -55,23 +68,22 @@ final class SoapEnvelopeBuilder
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
-        <ns1:exampleService>
-            <exampleInput>foo</exampleInput>
-        </ns1:exampleService>
+        {$this->body} 
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 EOD;
 
-        return $body;
+        return $envelope;
     }
 
     public static function create(): self
     {
-        return new self('/////');
+        return new self('/////', '');
     }
 
-    private function __construct(string $service)
+    private function __construct(string $service, string $body)
     {
         $this->service = $service;
+        $this->body = $body;
     }
 }

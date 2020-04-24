@@ -58,4 +58,32 @@ final class SoapEnvelopeBuilderTest extends TestCase
         $elements = $xpath->query('id:serviceVersion', $service);
         $this->assertEquals('v0', $elements->item(0)->nodeValue);
     }
+
+    /**
+     * @test
+     */
+    public function adds_body_into_SOAP_envelope()
+    {
+        $envelope = SoapEnvelopeBuilder::create()
+            ->withBody(
+                $expected = '<stub xmlns="http://stub.ee"></stub>'
+            )
+            ->build();
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($envelope);
+        $xpath = new DOMXPath($dom);
+
+        $xpath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $xpath->registerNamespace('ns', 'http://stub.ee');
+        $elements = $xpath->query('/soap:Envelope/soap:Body/ns:stub');
+        $content = $dom->saveXML(
+            $elements->item(0)
+        );
+
+        $this->assertXmlStringEqualsXmlString(
+            $expected,
+            $content
+        );
+    }
 }
