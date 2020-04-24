@@ -2,8 +2,6 @@
 
 namespace Raigu\XRoad;
 
-use Psr\Http\Message\StreamInterface;
-
 final class SoapEnvelopeBuilder
 {
     /**
