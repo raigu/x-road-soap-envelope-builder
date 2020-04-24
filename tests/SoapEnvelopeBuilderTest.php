@@ -120,4 +120,30 @@ final class SoapEnvelopeBuilderTest extends TestCase
             $content
         );
     }
+
+
+    /**
+     * @test
+     */
+    public function generates_unique_id_for_every_built_envelope()
+    {
+        $builder = SoapEnvelopeBuilder::create();
+
+        $envelope1 = $builder->build();
+        $envelope2 = $builder->build();
+
+        $id = function (string $envelope): string {
+            $dom = new \DOMDocument;
+            $dom->loadXML($envelope);
+
+            $elements = $dom->getElementsByTagNameNS('http://x-road.eu/xsd/xroad.xsd', 'id');
+
+            return $elements->item(0)->nodeValue;
+        };
+
+        $this->assertNotEquals(
+            $id($envelope1),
+            $id($envelope2)
+        );
+    }
 }

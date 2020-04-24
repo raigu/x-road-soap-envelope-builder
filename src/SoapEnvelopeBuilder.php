@@ -57,6 +57,7 @@ final class SoapEnvelopeBuilder
     {
         $service = explode('/', $this->service);
         $client = explode('/', $this->client);
+        $id = bin2hex(random_bytes(16));
 
         // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $envelope = <<<EOD
@@ -80,7 +81,7 @@ final class SoapEnvelopeBuilder
             <id:serviceCode>{$service[4]}</id:serviceCode>
             <id:serviceVersion>{$service[5]}</id:serviceVersion>
         </xrd:service>
-        <xrd:id>4894e35d-bf0f-44a6-867a-8e51f1daa7e0</xrd:id>
+        <xrd:id>{$id}</xrd:id>
         <xrd:userId>EE12345678901</xrd:userId>
         <xrd:issue>12345</xrd:issue>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
