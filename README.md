@@ -1,13 +1,14 @@
 # x-road-soap-envelope-builder
 
-PHP library for generating PSR-7 compatible X-Road SOAP envelope.
+PHP library for generating X-Road SOAP envelope.
 
 **UNDER CONSTRUCTION**
 
-Useful for making X-Road requests using PSR-7 compatible libraries like [Guzzle](https://github.com/guzzle/guzzle).
+Useful for making X-Road requests directly over HTTP. 
 
-Library exposes a builder for building X-Road SOAP envelope using X-Road Domain Language.
-Built SOAP envelope is an instance implementing PSR-7 StreamInterface. 
+The goal of this library is to allow composition of X-road request processing
+from third-party components by introducing missing piece - X-Road compliant HTTP request body.
+
 
 # Usage
 
@@ -18,8 +19,8 @@ Built SOAP envelope is an instance implementing PSR-7 StreamInterface.
 $builder = SoapEnvelopeBuilder::create()
     ->withService('EE/COM/10256137/cre/test/v1')
     ->withClient('EE/COM/10256137/cre')
-    ->withUserId('EE11111111111')
-    ->withIssue('------')
+    ->withUserId('EE0000000000')
+    ->withIssue('3b530db3-833c-41f9-b931-4f278954d654')
     ->withXRoadMessageBody('______');
 
 $envelope = $builder->build();
@@ -27,16 +28,22 @@ $envelope = $builder->build();
 echo strval($envelope);
 ```
 
-# Tutorial
+## Usage with Guzzle
 
-How to make a X-Road client using raigu/x-road-soap-envelope.
+```php
+$envelope = .... // See Usage how to build one. 
 
-```bash
-$ mkdir example
-$ cd example
-$ composer init
-$ composer require raigu/x-road-soap-envelope-builder
-``` 
+$client = new \Guzzle\Http\Client();
+$request = $client->post(
+    'https://xtee.domain.ee' // <-- your X-road Security server URL
+    [ "Content-Type" => "text/xml"],
+    $envelope
+);
+
+$response = $client->send($request);
+
+echo $response->getBody();
+```
 
 
 # References
