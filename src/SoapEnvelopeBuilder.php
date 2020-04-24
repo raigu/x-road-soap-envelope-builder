@@ -24,7 +24,7 @@ final class SoapEnvelopeBuilder
         return new self($service);
     }
 
-    public function build(): StreamInterface
+    public function build(): string
     {
         $service = explode('/', $this->service);
 
@@ -64,9 +64,7 @@ final class SoapEnvelopeBuilder
 </SOAP-ENV:Envelope>
 EOD;
 
-        return Stream::fromStr(
-            $body
-        );
+        return $body;
     }
 
     public static function create(): self
