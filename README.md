@@ -6,8 +6,9 @@ PHP library for generating X-Road SOAP envelope.
 
 Useful for making X-Road requests directly over HTTP. 
 
-The goal of this library is to allow composition of X-road request processing
-from third-party components by introducing missing piece - X-Road compliant HTTP request body.
+The goal of this library is to allow composition of X-Road request processing
+from third-party components by introducing missing piece - constructing of X-Road 
+compliant HTTP request body.
 
 
 # Usage
@@ -15,13 +16,17 @@ from third-party components by introducing missing piece - X-Road compliant HTTP
 **Draft**
 
 ```php
-
 $builder = SoapEnvelopeBuilder::create()
-    ->withService('EE/COM/10256137/cre/test/v1')
-    ->withClient('EE/COM/10256137/cre')
-    ->withUserId('EE0000000000')
-    ->withIssue('3b530db3-833c-41f9-b931-4f278954d654')
-    ->withXRoadMessageBody('______');
+    ->withService('EE/GOV/70008440/rr/RR437/v1')
+    ->withClient('EE/COM/12213008/gathering')
+    ->withXRoadMessageBody(<<<EOD
+        <prod:RR437 xmlns:prod="http://rr.x-road.eu/producer">
+            <request>
+                <Isikukood>00000000000</Isikukood>
+            </request>
+        </prod:RR437>
+EOD
+    );
 
 $envelope = $builder->build();
 
