@@ -113,8 +113,6 @@ final class SoapEnvelopeBuilderTest extends TestCase
 
         $elements = $xpath->query('/soap:Envelope/soap:Header/xrd:userId');
         $this->assertEquals(1, $elements->length, 'Must contain element "userId"');
-        $service = $elements->item(0);
-
         $this->assertEquals($expected, $elements->item(0)->nodeValue);
     }
 
