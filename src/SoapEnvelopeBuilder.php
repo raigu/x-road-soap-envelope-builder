@@ -12,9 +12,13 @@ final class SoapEnvelopeBuilder
      * @var string
      */
     private $body;
+    /**
+     * @var string
+     */
+    private $client;
 
     /**
-     * Clone builder and replace service
+     * Clone builder and replace service in SOAP header
      *
      * @param string $service encoded service.
      *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}/{serviceCode}/{serviceVerson}
@@ -23,7 +27,20 @@ final class SoapEnvelopeBuilder
      */
     public function withService(string $service): self
     {
-        return new self($service, $this->body);
+        return new self($service, $this->client, $this->body);
+    }
+
+    /**
+     * Clone builder and replace client in SOAP header
+     *
+     * @param string $service encoded service.
+     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
+     *                   Example: EE/COM/00000000/sys
+     * @return self cloned builder with overwritten client data
+     */
+    public function withClient(string $client): self
+    {
+        return new self($this->service, $client, $this->body);
     }
 
     /**
@@ -33,12 +50,13 @@ final class SoapEnvelopeBuilder
      */
     public function withBody(string $body): self
     {
-        return new self($this->service, $body);
+        return new self($this->service, $this->client, $body);
     }
 
     public function build(): string
     {
         $service = explode('/', $this->service);
+        $client = explode('/', $this->client);
 
         // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $envelope = <<<EOD
@@ -49,10 +67,10 @@ final class SoapEnvelopeBuilder
         xmlns:id="http://x-road.eu/xsd/identifiers">
     <SOAP-ENV:Header>
         <xrd:client id:objectType="SUBSYSTEM">
-            <id:xRoadInstance>EE</id:xRoadInstance>
-            <id:memberClass>GOV</id:memberClass>
-            <id:memberCode>MEMBER1</id:memberCode>
-            <id:subsystemCode>SUBSYSTEM1</id:subsystemCode>
+            <id:xRoadInstance>{$client[0]}</id:xRoadInstance>
+            <id:memberClass>{$client[1]}</id:memberClass>
+            <id:memberCode>{$client[2]}</id:memberCode>
+            <id:subsystemCode>{$client[3]}</id:subsystemCode>
         </xrd:client>
         <xrd:service id:objectType="SERVICE">
             <id:xRoadInstance>{$service[0]}</id:xRoadInstance>
@@ -78,12 +96,13 @@ EOD;
 
     public static function create(): self
     {
-        return new self('/////', '');
+        return new self('/////', '///', '');
     }
 
-    private function __construct(string $service, string $body)
+    private function __construct(string $service, string $client, string $body)
     {
         $this->service = $service;
         $this->body = $body;
+        $this->client = $client;
     }
 }

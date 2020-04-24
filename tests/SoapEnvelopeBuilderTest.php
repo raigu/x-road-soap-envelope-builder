@@ -62,6 +62,40 @@ final class SoapEnvelopeBuilderTest extends TestCase
     /**
      * @test
      */
+    public function adds_client_into_SOAP_envelope()
+    {
+        $envelope = SoapEnvelopeBuilder::create()
+            ->withClient('EE/COM/00000000/SYS')
+            ->build();
+
+        $dom = new DOMDocument;
+        $dom->loadXML($envelope);
+        $xpath = new DOMXPath($dom);
+
+        $xpath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $xpath->registerNamespace('xrd', 'http://x-road.eu/xsd/xroad.xsd');
+        $xpath->registerNamespace('id', 'http://x-road.eu/xsd/identifiers');
+
+        $elements = $xpath->query('/soap:Envelope/soap:Header/xrd:client');
+        $this->assertEquals(1, $elements->length, 'Must contain element "client"');
+        $service = $elements->item(0);
+
+        $elements = $xpath->query('id:xRoadInstance', $service);
+        $this->assertEquals('EE', $elements->item(0)->nodeValue);
+
+        $elements = $xpath->query('id:memberClass', $service);
+        $this->assertEquals('COM', $elements->item(0)->nodeValue);
+
+        $elements = $xpath->query('id:memberCode', $service);
+        $this->assertEquals('00000000', $elements->item(0)->nodeValue);
+
+        $elements = $xpath->query('id:subsystemCode', $service);
+        $this->assertEquals('SYS', $elements->item(0)->nodeValue);
+    }
+
+    /**
+     * @test
+     */
     public function adds_body_into_SOAP_envelope()
     {
         $envelope = SoapEnvelopeBuilder::create()
