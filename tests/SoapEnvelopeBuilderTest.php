@@ -96,6 +96,31 @@ final class SoapEnvelopeBuilderTest extends TestCase
     /**
      * @test
      */
+    public function adds_userId_into_SOAP_envelope()
+    {
+        $envelope = SoapEnvelopeBuilder::create()
+            ->withUserId(
+                $expected = 'EE00000000000'
+            )
+            ->build();
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($envelope);
+        $xpath = new DOMXPath($dom);
+
+        $xpath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $xpath->registerNamespace('xrd', 'http://x-road.eu/xsd/xroad.xsd');
+
+        $elements = $xpath->query('/soap:Envelope/soap:Header/xrd:userId');
+        $this->assertEquals(1, $elements->length, 'Must contain element "userId"');
+        $service = $elements->item(0);
+
+        $this->assertEquals($expected, $elements->item(0)->nodeValue);
+    }
+
+    /**
+     * @test
+     */
     public function adds_body_into_SOAP_envelope()
     {
         $envelope = SoapEnvelopeBuilder::create()

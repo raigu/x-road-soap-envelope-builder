@@ -16,6 +16,10 @@ final class SoapEnvelopeBuilder
      * @var string
      */
     private $client;
+    /**
+     * @var string
+     */
+    private $userId;
 
     /**
      * Clone builder and replace service in SOAP header
@@ -27,7 +31,7 @@ final class SoapEnvelopeBuilder
      */
     public function withService(string $service): self
     {
-        return new self($service, $this->client, $this->body);
+        return new self($service, $this->client, $this->body, $this->userId);
     }
 
     /**
@@ -40,7 +44,20 @@ final class SoapEnvelopeBuilder
      */
     public function withClient(string $client): self
     {
-        return new self($this->service, $client, $this->body);
+        return new self($this->service, $client, $this->body, $this->userId);
+    }
+
+     /**
+     * Clone builder and replace userId in SOAP header
+     *
+     * @param string $userId the
+     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
+     *                   Example: EE/COM/00000000/sys
+     * @return self cloned builder with overwritten client data
+     */
+    public function withUserId(string $userId): self
+    {
+        return new self($this->service, $this->client, $this->body, $userId);
     }
 
     /**
@@ -50,7 +67,7 @@ final class SoapEnvelopeBuilder
      */
     public function withBody(string $body): self
     {
-        return new self($this->service, $this->client, $body);
+        return new self($this->service, $this->client, $body, $this->userId);
     }
 
     public function build(): string
@@ -58,6 +75,7 @@ final class SoapEnvelopeBuilder
         $service = explode('/', $this->service);
         $client = explode('/', $this->client);
         $id = bin2hex(random_bytes(16));
+        $userIdTag = empty($this->userId) ? '' : '<xrd:userId>'.$this->userId.'</xrd:userId>';
 
         // source of response template: https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#e1-request
         $envelope = <<<EOD
@@ -82,7 +100,7 @@ final class SoapEnvelopeBuilder
             <id:serviceVersion>{$service[5]}</id:serviceVersion>
         </xrd:service>
         <xrd:id>{$id}</xrd:id>
-        <xrd:userId>EE12345678901</xrd:userId>
+        {$userIdTag}
         <xrd:issue>12345</xrd:issue>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
@@ -97,13 +115,14 @@ EOD;
 
     public static function create(): self
     {
-        return new self('/////', '///', '');
+        return new self('/////', '///', '', '');
     }
 
-    private function __construct(string $service, string $client, string $body)
+    private function __construct(string $service, string $client, string $body, string $userId)
     {
         $this->service = $service;
         $this->body = $body;
         $this->client = $client;
+        $this->userId = $userId;
     }
 }
