@@ -2,18 +2,11 @@
 
 PHP library for generating X-Road SOAP envelope.
 
-![Under construction](https://freesvg.org/img/UN-CONSTRUCTION-2.png)
-
-Useful for making X-Road requests directly over HTTP. 
-
-The goal of this library is to allow composition of X-Road request processing
-from third-party components by introducing missing piece - constructing of X-Road 
-compliant HTTP request body.
-
+Useful for communicating with X-Road using third-party HTTP libraries. Gives more control at client side.
 
 # Usage
 
-**Draft**
+## Building SOAP envelope
 
 ```php
 $builder = SoapEnvelopeBuilder::create()
@@ -25,7 +18,7 @@ $builder = SoapEnvelopeBuilder::create()
                 <Isikukood>00000000000</Isikukood>
             </request>
         </prod:RR437>
-EOD
+EOD;
     );
 
 $envelope = $builder->build();
@@ -33,10 +26,13 @@ $envelope = $builder->build();
 echo $envelope;
 ```
 
-## Usage with Guzzle
+## Sending SOAP envelope
+
+Samples use same `$envelope` generated above.
+
+### Using Guzzle
 
 ```php
-$envelope = .... // See Usage how to build one. 
 
 $client = new \Guzzle\Http\Client();
 $request = $client->post(
@@ -49,8 +45,8 @@ $response = $client->send($request);
 
 echo $response->getBody();
 ```
-
-
+ 
+ 
 # References
 
 * [X-Road Terms and Abbreviations](https://www.x-tee.ee/docs/live/xroad/terms_x-road_docs.html)
