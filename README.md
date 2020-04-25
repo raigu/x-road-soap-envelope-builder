@@ -2,7 +2,7 @@
 
 PHP library for generating X-Road SOAP envelope.
 
-Useful for communicating with X-Road using third-party HTTP libraries.
+Useful for making requests over X-Road using third-party HTTP libraries.
 
 # Requirements
 
