@@ -4,6 +4,11 @@ PHP library for generating X-Road SOAP envelope.
 
 Useful for communicating with X-Road using third-party HTTP libraries.
 
+# Requirements
+
+* php 7.0+
+* DOM extension
+
 # Installation
 
 ```bash
