@@ -49,9 +49,12 @@ class Client implements XmlInjectable
         $elements->item(0)->appendChild($client);
     }
 
-    public static function fromStr(string $value)
+    public static function fromStr(string $value): self
     {
         $values = explode('/', $value);
+        if (count($values) !== 4) {
+            throw new \Exception('Could not extract client parameters. Invalid format.');
+        }
         return new self($values);
     }
 
