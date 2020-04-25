@@ -6,7 +6,7 @@ Useful for making requests over X-Road using third-party HTTP libraries.
 
 # Requirements
 
-* php 7.0+
+* php 7.1+
 * DOM extension
 
 # Installation
