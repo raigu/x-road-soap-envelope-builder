@@ -37,6 +37,11 @@ $envelope = $builder->build();
 echo $envelope;
 ```
 
+The method's `withXRoadMessageBody` input parameter can be generated from
+ WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/).
+
+The WSDL-s can be found from [X-Road catalog](https://x-tee.ee/catalogue/EE). 
+
 ## Sending SOAP envelope
 
 Samples use same `$envelope` generated above.
@@ -56,7 +61,6 @@ $response = $client->send($request);
 
 echo $response->getBody();
 ```
- 
  
 # References
 
