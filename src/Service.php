@@ -10,9 +10,9 @@ use DOMDocument;
 class Service implements XmlInjectable
 {
     /**
-     * @var string
+     * @var array
      */
-    private $value;
+    private $values;
 
     public function inject(DOMDocument $dom)
     {
@@ -29,9 +29,8 @@ class Service implements XmlInjectable
         $service->appendChild($objectType);
 
         $names = ['xRoadInstance', 'memberClass', 'memberCode', 'subsystemCode', 'serviceCode', 'serviceVersion'];
-        $values = explode('/', $this->value);
 
-        foreach (array_combine($names, $values) as $name => $value) {
+        foreach (array_combine($names, $this->values) as $name => $value) {
             $service->appendChild(
                 $dom->createElementNS(
                     'http://x-road.eu/xsd/identifiers',
@@ -51,11 +50,15 @@ class Service implements XmlInjectable
 
     public static function fromStr(string $value): self
     {
-        return new self($value);
+        $values = explode('/', $value);
+        if (count($values) !== 6) {
+            throw new \Exception('Could not extract service parameters. Invalid format.');
+        }
+        return new self($values);
     }
 
-    private function __construct(string $value)
+    private function __construct(array $values)
     {
-        $this->value = $value;
+        $this->values = $values;
     }
 }
