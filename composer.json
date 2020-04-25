@@ -1,6 +1,6 @@
 {
-    "name": "raigu/x-road-client",
-    "description": "PHP library for making requests over X-Road",
+    "name": "raigu/x-road-soap-envelope-builder",
+    "description": "PHP library for generating X-Road SOAP envelope.",
     "type": "library",
     "license": "MIT",
     "authors": [
