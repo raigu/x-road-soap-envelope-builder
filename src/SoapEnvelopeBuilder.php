@@ -52,7 +52,7 @@ final class SoapEnvelopeBuilder
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements[3] = new UserId($userId);
+        $elements[3] = UserId::fromStr($userId);
 
         return new self(...$elements);
     }

@@ -27,7 +27,12 @@ class UserId implements XmlInjectable
         );
     }
 
-    public function __construct(string $value)
+    public static function fromStr(string $value): self
+    {
+        return new self($value);
+    }
+
+    protected function __construct(string $value)
     {
         $this->value = $value;
     }
