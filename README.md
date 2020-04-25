@@ -2,7 +2,13 @@
 
 PHP library for generating X-Road SOAP envelope.
 
-Useful for communicating with X-Road using third-party HTTP libraries. Gives more control at client side.
+Useful for communicating with X-Road using third-party HTTP libraries.
+
+# Installation
+
+```bash
+$ composer require raigu/x-road-soap-envelope-builder
+``` 
 
 # Usage
 
