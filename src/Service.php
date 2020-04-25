@@ -49,7 +49,12 @@ class Service implements XmlInjectable
         $elements->item(0)->appendChild($service);
     }
 
-    public function __construct(string $value)
+    public static function fromStr(string $value): self
+    {
+        return new self($value);
+    }
+
+    private function __construct(string $value)
     {
         $this->value = $value;
     }

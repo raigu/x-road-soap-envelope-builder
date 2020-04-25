@@ -20,7 +20,7 @@ final class SoapEnvelopeBuilder
     public function withService(string $service): self
     {
         $elements = $this->elements;
-        $elements[0] = new Service($service);
+        $elements[0] = Service::fromStr($service);
 
         return new self(...$elements);
     }
