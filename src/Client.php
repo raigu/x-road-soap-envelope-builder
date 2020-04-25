@@ -10,9 +10,9 @@ use DOMDocument;
 class Client implements XmlInjectable
 {
     /**
-     * @var string
+     * @var array
      */
-    private $value;
+    private $values;
 
     public function inject(DOMDocument $dom)
     {
@@ -29,9 +29,9 @@ class Client implements XmlInjectable
         $client->appendChild($objectType);
 
         $names = ['xRoadInstance', 'memberClass', 'memberCode', 'subsystemCode'];
-        $values = explode('/', $this->value);
 
-        foreach (array_combine($names, $values) as $name => $value) {
+
+        foreach (array_combine($names, $this->values) as $name => $value) {
             $client->appendChild(
                 $dom->createElementNS(
                     'http://x-road.eu/xsd/identifiers',
@@ -49,8 +49,14 @@ class Client implements XmlInjectable
         $elements->item(0)->appendChild($client);
     }
 
-    public function __construct(string $value)
+    public static function fromStr(string $value)
     {
-        $this->value = $value;
+        $values = explode('/', $value);
+        return new self($values);
+    }
+
+    protected function __construct(array $values)
+    {
+        $this->values = $values;
     }
 }

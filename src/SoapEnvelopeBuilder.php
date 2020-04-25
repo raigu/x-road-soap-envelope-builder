@@ -36,7 +36,7 @@ final class SoapEnvelopeBuilder
     public function withClient(string $client): self
     {
         $elements = $this->elements;
-        $elements[1] = new Client($client);
+        $elements[1] = Client::fromStr($client);
 
         return new self(...$elements);
     }
