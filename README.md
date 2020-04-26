@@ -1,6 +1,6 @@
 # x-road-soap-envelope-builder
 
-PHP library for generating X-Road SOAP envelope.
+PHP library for generating SOAP envelope of X-Road request.
 
 Useful for making requests over X-Road using third-party HTTP libraries.
 
@@ -17,13 +17,13 @@ $ composer require raigu/x-road-soap-envelope-builder
 
 # Usage
 
-## Building SOAP envelope
+## Building SOAP envelope of X-Road Request
 
 ```php
-$builder = SoapEnvelopeBuilder::create()
+$builder = \Raigu\XRoad\SoapEnvelopeBuilder::create()
     ->withService('EE/GOV/70008440/rr/RR437/v1')
     ->withClient('EE/COM/12213008/gathering')
-    ->withXRoadMessageBody(<<<EOD
+    ->withBody(<<<EOD
         <prod:RR437 xmlns:prod="http://rr.x-road.eu/producer">
             <request>
                 <Isikukood>00000000000</Isikukood>
@@ -40,19 +40,18 @@ echo $envelope;
 The method's `withXRoadMessageBody` input parameter can be generated from
  WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/).
 
-The WSDL-s can be found from [X-Road catalog](https://x-tee.ee/catalogue/EE). 
+The WSDL-s can be found on [X-Road catalog](https://x-tee.ee/catalogue/EE). 
 
-## Sending SOAP envelope
+## Making X-Road request
 
-Samples use same `$envelope` generated above.
+Assign to `$securityServerUrl` your security server URL in following samples.
 
 ### Using Guzzle
 
 ```php
-
 $client = new \Guzzle\Http\Client();
 $request = $client->post(
-    'https://xtee.domain.ee' // <-- your X-road Security server URL
+    $securityServerUrl,
     [ "Content-Type" => "text/xml"],
     $envelope
 );
