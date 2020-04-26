@@ -60,6 +60,26 @@ $response = $client->send($request);
 
 echo $response->getBody();
 ```
+
+### Using curl
+
+```php
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, $securityServerUrl);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $envelope);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: text/xml',
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+$output = curl_exec($ch);
+
+curl_close($ch);
+
+echo $output;
+```
  
 # References
 
