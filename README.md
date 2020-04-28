@@ -1,6 +1,7 @@
 [![Latest Stable Version](https://poser.pugx.org/raigu/x-road-soap-envelope-builder/v/stable)](https://packagist.org/packages/raigu/x-road-soap-envelope-builder)
 [![Build Status](https://travis-ci.com/raigu/x-road-soap-envelope-builder.svg?branch=master)](https://travis-ci.com/raigu/x-road-soap-envelope-builder)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![codecov](https://codecov.io/gh/raigu/x-road-soap-envelope-builder/branch/master/graph/badge.svg)](https://codecov.io/gh/raigu/x-road-soap-envelope-builder)
 
 # x-road-soap-envelope-builder
 
