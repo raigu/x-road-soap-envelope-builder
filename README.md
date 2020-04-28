@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/raigu/x-road-soap-envelope-builder.svg?branch=master)](https://travis-ci.com/raigu/x-road-soap-envelope-builder)
+
 # x-road-soap-envelope-builder
 
 PHP library for generating a SOAP envelope for X-Road request.
