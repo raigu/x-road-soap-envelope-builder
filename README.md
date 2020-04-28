@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/raigu/x-road-soap-envelope-builder.svg?branch=master)](https://travis-ci.com/raigu/x-road-soap-envelope-builder)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 # x-road-soap-envelope-builder
 
