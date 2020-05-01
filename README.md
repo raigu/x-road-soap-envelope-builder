@@ -7,7 +7,7 @@
 
 PHP library for generating a SOAP envelope for X-Road request.
 
-Useful for making requests over X-Road using third-party HTTP libraries.
+It is a stand-alone library used in [raigu/x-road-client](https://github.com/raigu/x-road-client).
 
 # Requirements
 
@@ -45,7 +45,7 @@ echo $envelope;
 The method's `withBody` input parameter can be generated from
  WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/).
 
-The WSDL-s can be found on [X-Road catalog](https://x-tee.ee/catalogue/EE). 
+The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE). 
 
 ## Builder methods
 | Method name | Mandatory | Description                                                                                                                                                                                                                                                                           |
@@ -65,7 +65,10 @@ In following samples assign your X-Road security server URL to `$securityServerU
 $client = new \Guzzle\Http\Client();
 $request = $client->post(
     $securityServerUrl,
-    [ "Content-Type" => "text/xml"],
+    [ 
+        'Content-Type' => 'text/xml',
+        'SOAPAction' => ''
+    ],
     $envelope
 );
 
@@ -82,7 +85,10 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $securityServerUrl);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $envelope);
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: text/xml']);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type' => 'text/xml',
+        'SOAPAction' => ''
+    ]);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 $output = curl_exec($ch);
