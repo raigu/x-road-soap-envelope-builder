@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelopeBuilder;
+use Raigu\XRoad\SoapEnvelope\SoapEnvelopeBuilder;
 
 final class SoapEnvelopeBuilderTest extends TestCase
 {

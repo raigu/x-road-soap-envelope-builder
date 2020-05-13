@@ -1,6 +1,6 @@
 <?php
 
-namespace Raigu\XRoad;
+namespace Raigu\XRoad\SoapEnvelope;
 
 use DOMDocument;
 

@@ -25,7 +25,7 @@ $ composer require raigu/x-road-soap-envelope-builder
 ## Building SOAP envelope for X-Road request
 
 ```php
-$builder = \Raigu\XRoad\SoapEnvelopeBuilder::create()
+$builder = \Raigu\XRoad\SoapEnvelope\SoapEnvelopeBuilder::create()
     ->withService('EE/GOV/70008440/rr/RR437/v1')
     ->withClient('EE/COM/12213008/gathering')
     ->withBody(<<<EOD
