@@ -5,7 +5,7 @@ namespace Raigu\XRoad\SoapEnvelope;
 final class SoapEnvelopeBuilder
 {
     /**
-     * @var XmlInjectable[]
+     * @var array
      */
     private $elements;
 
@@ -20,9 +20,9 @@ final class SoapEnvelopeBuilder
     public function withService(string $service): self
     {
         $elements = $this->elements;
-        $elements[0] = Service::fromStr($service);
+        $elements['service'] = Service::fromStr($service);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
     /**
@@ -36,9 +36,9 @@ final class SoapEnvelopeBuilder
     public function withClient(string $client): self
     {
         $elements = $this->elements;
-        $elements[1] = Client::fromStr($client);
+        $elements['client'] = Client::fromStr($client);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
      /**
@@ -52,9 +52,9 @@ final class SoapEnvelopeBuilder
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements[3] = UserId::fromStr($userId);
+        $elements['userId'] = UserId::fromStr($userId);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
     /**
@@ -65,9 +65,9 @@ final class SoapEnvelopeBuilder
     public function withBody(string $body): self
     {
         $elements = $this->elements;
-        $elements[2] = new BodyContent($body);
+        $elements['body'] = new BodyContent($body);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
     public function build(): string
@@ -100,11 +100,12 @@ EOD;
 
     public static function create(): self
     {
-        return new self(
-            new UnInitialized('Service not initialized'),
-            new UnInitialized('Client not initialized'),
-            new UnInitialized('Body not initialized'),
-            new None
+        return new self([
+                'service' => new UnInitialized('Service not initialized'),
+                'client' => new UnInitialized('Client not initialized'),
+                'body' => new UnInitialized('Body not initialized'),
+                'userId' => new None,
+            ]
         );
     }
 
@@ -116,7 +117,7 @@ EOD;
             ->withBody('<stub xmlns="https://stub.ee"></stub>');
     }
 
-    private function __construct(XmlInjectable ...$elements)
+    private function __construct(array $elements)
     {
         $this->elements = $elements;
     }
