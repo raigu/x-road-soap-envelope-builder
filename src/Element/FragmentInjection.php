@@ -10,32 +10,23 @@ use DOMDocument;
 final class FragmentInjection implements XmlInjectable
 {
     /**
-     * @var string
+     * @var DeferredFragmentInjection
      */
-    private $parentNS;
-    /**
-     * @var string
-     */
-    private $parentTagName;
-    /**
-     * @var string
-     */
-    private $fragment;
+    private $injection;
 
     public function inject(DOMDocument $dom)
     {
-        $elements = $dom->getElementsByTagNameNS($this->parentNS, $this->parentTagName);
-
-        $fragment = $dom->createDocumentFragment();
-        $fragment->appendXML($this->fragment);
-
-        $elements->item(0)->appendChild($fragment);
+        $this->injection->inject($dom);
     }
 
     public function __construct(string $parentNS, string $parentTagName, string $fragment)
     {
-        $this->parentNS = $parentNS;
-        $this->parentTagName = $parentTagName;
-        $this->fragment = $fragment;
+        $this->injection = new DeferredFragmentInjection(
+            $parentNS,
+            $parentTagName,
+            function () use ($fragment): string {
+                return $fragment;
+            }
+        );
     }
 }
