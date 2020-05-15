@@ -4,7 +4,6 @@ namespace Raigu\XRoad\SoapEnvelope;
 
 use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\Id;
 use Raigu\XRoad\SoapEnvelope\Element\None;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
 
@@ -149,6 +148,15 @@ EOD;
     private function __construct(array $elements)
     {
         $this->elements = $elements;
-        $this->elements['id'] = Id::random();
+        $this->elements['id'] = FragmentInjection::fromClosure(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            function () {
+                return sprintf(
+                    '<xrd:id xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">%s</xrd:id>',
+                    bin2hex(random_bytes(16))
+                );
+            }
+        );
     }
 }

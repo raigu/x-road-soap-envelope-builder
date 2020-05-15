@@ -2,8 +2,8 @@
 
 namespace Raigu\XRoad\SoapEnvelope\Element;
 
+use Closure;
 use DOMDocument;
-use DOMElement;
 
 final class FragmentInjection implements XmlInjectable
 {
@@ -16,7 +16,7 @@ final class FragmentInjection implements XmlInjectable
      */
     private $parentTagName;
     /**
-     * @var string
+     * @var Closure
      */
     private $fragment;
 
@@ -25,17 +25,24 @@ final class FragmentInjection implements XmlInjectable
         $elements = $dom->getElementsByTagNameNS($this->parentNS, $this->parentTagName);
 
         $fragment = $dom->createDocumentFragment();
-        $fragment->appendXML($this->fragment);
+        $fragment->appendXML(call_user_func($this->fragment));
 
         $elements->item(0)->appendChild($fragment);
     }
 
-    public static function create(string $parentNS, string $parentTagName, string $fragment): self
+    public static function fromClosure(string $parentNS, string $parentTagName, Closure $fragment)
     {
         return new self($parentNS, $parentTagName, $fragment);
     }
 
-    private function __construct(string $parentNS, string $parentTagName, string $fragment)
+    public static function create(string $parentNS, string $parentTagName, string $fragment): self
+    {
+        return self::fromClosure($parentNS, $parentTagName, function () use ($fragment): string {
+            return $fragment;
+        });
+    }
+
+    private function __construct(string $parentNS, string $parentTagName, Closure $fragment)
     {
         $this->parentNS = $parentNS;
         $this->parentTagName = $parentTagName;
