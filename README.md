@@ -54,6 +54,7 @@ The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE).
 | withClient  | Y         | client id. <br/>Format: `{xRoadInstance}/{memberClass}/{memberCode}/(subsystemCode}`                                                                                                                                                                                                   |
 | withBody    | Y         | X-Road service request witch is but into the X-Road message body. See short [video](https://youtu.be/ziQIwlTtPLA) how you can find the WSDL based on service id and generate body from WSDL. If you use SoapUI make sure you do not miss the XML proper namespace definition. |
 | withUserId  | N         | natural person code who is initiating the request. Format: `{isoCountryCode2Alfa}/{personCode}`. Optional.                                                                                                                                                                            |
+| withRepresentedParty | N | Party who is represented by client. See [X-Road Third Party Representation Extension](https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html) for more info.<br/>Format: `[{partyClass}/]{partyCode}`. Optional. |
 
 ## Making X-Road request
 
