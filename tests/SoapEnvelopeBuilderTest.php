@@ -191,4 +191,14 @@ final class SoapEnvelopeBuilderTest extends TestCase
         $elements = $xpath->query('/e:Envelope/e:Header/r:representedParty');
         $this->assertEquals(1, $elements->length, 'Must contain element "representedParty"');
     }
+
+
+    /**
+     * @test
+     */
+    public function throw_exception_if_mandatory_data_is_not_given()
+    {
+        $this->expectExceptionMessage('not initialized');
+        SoapEnvelopeBuilder::create()->build();
+    }
 }
