@@ -14,7 +14,7 @@ final class FragmentInjection implements XmlInjectable
      */
     private $injection;
 
-    public function inject(DOMDocument $dom)
+    public function inject(DOMDocument $dom): void
     {
         $this->injection->inject($dom);
     }

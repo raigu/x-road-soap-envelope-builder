@@ -23,7 +23,7 @@ final class DOMElementInjection implements XmlInjectable
      */
     private $child;
 
-    public function inject(DOMDocument $dom)
+    public function inject(DOMDocument $dom): void
     {
         $elements = $dom->getElementsByTagNameNS($this->parentNS, $this->parentTagName);
         $elements->item(0)->appendChild($this->child);

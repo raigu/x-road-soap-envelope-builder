@@ -24,7 +24,7 @@ final class DeferredFragmentInjection implements XmlInjectable
      */
     private $fragment;
 
-    public function inject(DOMDocument $dom)
+    public function inject(DOMDocument $dom): void
     {
         $elements = $dom->getElementsByTagNameNS($this->parentNS, $this->parentTagName);
 

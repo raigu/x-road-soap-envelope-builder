@@ -9,5 +9,5 @@ use DOMDocument;
  */
 interface XmlInjectable
 {
-    public function inject(DOMDocument $dom);
+    public function inject(DOMDocument $dom): void;
 }
