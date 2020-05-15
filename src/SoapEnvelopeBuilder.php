@@ -107,14 +107,14 @@ final class SoapEnvelopeBuilder
     {
         $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" 
                    xmlns:id="http://x-road.eu/xsd/identifiers"
                    xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
-    <SOAP-ENV:Header>
+    <env:Header>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
-    </SOAP-ENV:Header>
-    <SOAP-ENV:Body/>
-</SOAP-ENV:Envelope>
+    </env:Header>
+    <env:Body/>
+</env:Envelope>
 EOD;
 
         $dom = new \DOMDocument();
