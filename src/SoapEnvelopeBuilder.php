@@ -4,7 +4,6 @@ namespace Raigu\XRoad\SoapEnvelope;
 
 use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\None;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
 
 final class SoapEnvelopeBuilder
@@ -132,7 +131,6 @@ EOD;
                 'service' => new UnInitialized('Service not initialized'),
                 'client' => new UnInitialized('Client not initialized'),
                 'body' => new UnInitialized('Body not initialized'),
-                'userId' => new None,
             ]
         );
     }
