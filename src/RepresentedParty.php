@@ -4,6 +4,10 @@ namespace Raigu\XRoad\SoapEnvelope;
 
 use DOMDocument;
 
+/**
+ * I am a represented party element in X-Road SOAP request.
+ * I follow technical specification https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
+ */
 final class RepresentedParty implements XmlInjectable
 {
     /**
