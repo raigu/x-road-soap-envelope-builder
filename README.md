@@ -43,9 +43,9 @@ echo $envelope;
 ```
 
 The method's `withBody` input parameter can be generated from
- WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/).
-
-The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE). 
+WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/). 
+The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE).  
+See short (1:34) demo [video](https://youtu.be/ziQIwlTtPLA) how to acquire WSDL and generate a request body.
 
 ## Builder methods
 | Method name | Mandatory | Description                                                                                                                                                                                                                                                                           |
