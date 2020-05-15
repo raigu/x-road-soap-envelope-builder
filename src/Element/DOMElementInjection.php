@@ -5,7 +5,10 @@ namespace Raigu\XRoad\SoapEnvelope\Element;
 use DOMDocument;
 use DOMElement;
 
-final class ElementInjection implements XmlInjectable
+/**
+ * I append DOMElement as child to referred node.
+ */
+final class DOMElementInjection implements XmlInjectable
 {
     /**
      * @var string

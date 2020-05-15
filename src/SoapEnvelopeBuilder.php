@@ -3,7 +3,7 @@
 namespace Raigu\XRoad\SoapEnvelope;
 
 use Raigu\XRoad\SoapEnvelope\Element\DeferredFragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
+use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
 
@@ -57,7 +57,7 @@ final class SoapEnvelopeBuilder
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements['userId'] = new ElementInjection(
+        $elements['userId'] = new DOMElementInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             new \DOMElement(

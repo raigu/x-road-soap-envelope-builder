@@ -6,7 +6,8 @@ use Closure;
 use DOMDocument;
 
 /**
- * I defer fragment creation to the last moment before injection.
+ * I append XML fragment as child to referred node.
+ * I defer fragment creation to the last moment before appending.
  */
 final class DeferredFragmentInjection implements XmlInjectable
 {

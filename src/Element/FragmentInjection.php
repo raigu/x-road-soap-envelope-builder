@@ -4,6 +4,9 @@ namespace Raigu\XRoad\SoapEnvelope\Element;
 
 use DOMDocument;
 
+/**
+ * I append XML fragment as child to referred node.
+ */
 final class FragmentInjection implements XmlInjectable
 {
     /**
