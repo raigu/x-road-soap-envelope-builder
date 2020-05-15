@@ -33,7 +33,7 @@ final class ClientFactory
 </xrd:client>
 EOD;
 
-        return new FragmentInjection(
+        return FragmentInjection::create(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             $fragment

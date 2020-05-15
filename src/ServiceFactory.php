@@ -35,7 +35,7 @@ final class ServiceFactory
 </xrd:service>
 EOD;
 
-        return new FragmentInjection(
+        return FragmentInjection::create(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             $fragment

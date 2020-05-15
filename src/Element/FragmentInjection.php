@@ -30,7 +30,12 @@ final class FragmentInjection implements XmlInjectable
         $elements->item(0)->appendChild($fragment);
     }
 
-    public function __construct(string $parentNS, string $parentTagName, string $fragment)
+    public static function create(string $parentNS, string $parentTagName, string $fragment): self
+    {
+        return new self($parentNS, $parentTagName, $fragment);
+    }
+
+    private function __construct(string $parentNS, string $parentTagName, string $fragment)
     {
         $this->parentNS = $parentNS;
         $this->parentTagName = $parentTagName;

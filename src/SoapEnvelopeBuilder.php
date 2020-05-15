@@ -79,7 +79,7 @@ final class SoapEnvelopeBuilder
     public function withBody(string $body): self
     {
         $elements = $this->elements;
-        $elements['body'] = new FragmentInjection(
+        $elements['body'] = FragmentInjection::create(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Body',
             $body
