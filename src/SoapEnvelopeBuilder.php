@@ -72,15 +72,12 @@ final class SoapEnvelopeBuilder
 
     public function build(): string
     {
-        $id = bin2hex(random_bytes(16));
-
         $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
                    xmlns:id="http://x-road.eu/xsd/identifiers"
                    xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
     <SOAP-ENV:Header>
-        <xrd:id>{$id}</xrd:id>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
@@ -120,5 +117,6 @@ EOD;
     private function __construct(array $elements)
     {
         $this->elements = $elements;
+        $this->elements['id'] = Id::random();
     }
 }
