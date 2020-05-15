@@ -12,7 +12,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 final class ServiceFactory
 {
     /**
-     * @param string $representedParty
+     * @param string $reference
      * @return XmlInjectable
      */
     public function fromStr(string $reference): XmlInjectable
