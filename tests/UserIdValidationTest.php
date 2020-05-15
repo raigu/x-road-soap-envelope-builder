@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\Element\UserId;
+use Raigu\XRoad\SoapEnvelope\ValidatedUserId as ValidatedUserIdAlias;
 
 class UserIdValidationTest extends TestCase
 {
@@ -11,6 +11,7 @@ class UserIdValidationTest extends TestCase
     public function fromStr_throws_exception_if_country_code_prefix_missing()
     {
         $this->expectExceptionMessage('country code');
-        UserId::fromStr('00000000000');
+        $sut = new ValidatedUserIdAlias('00000000000');
+        $sut->asStr();
     }
 }

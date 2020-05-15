@@ -3,11 +3,10 @@
 namespace Raigu\XRoad\SoapEnvelope;
 
 use Raigu\XRoad\SoapEnvelope\Element\BodyContent;
-use Raigu\XRoad\SoapEnvelope\Element\Client;
+use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\Id;
 use Raigu\XRoad\SoapEnvelope\Element\None;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
-use Raigu\XRoad\SoapEnvelope\Element\UserId;
 
 final class SoapEnvelopeBuilder
 {
@@ -59,7 +58,15 @@ final class SoapEnvelopeBuilder
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements['userId'] = UserId::fromStr($userId);
+        $elements['userId'] = new ElementInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            new \DOMElement(
+                'userId',
+                (new ValidatedUserId($userId))->asStr(),
+                'http://x-road.eu/xsd/xroad.xsd'
+            )
+        );
 
         return new self($elements);
     }
