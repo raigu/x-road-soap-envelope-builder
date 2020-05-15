@@ -2,8 +2,8 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use Raigu\XRoad\SoapEnvelope\Element\BodyContent;
 use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
+use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\Id;
 use Raigu\XRoad\SoapEnvelope\Element\None;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
@@ -79,7 +79,11 @@ final class SoapEnvelopeBuilder
     public function withBody(string $body): self
     {
         $elements = $this->elements;
-        $elements['body'] = new BodyContent($body);
+        $elements['body'] = new FragmentInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Body',
+            $body
+        );
 
         return new self($elements);
     }
