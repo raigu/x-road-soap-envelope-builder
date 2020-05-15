@@ -11,45 +11,30 @@ use DOMDocument;
 final class RepresentedParty implements XmlInjectable
 {
     /**
-     * @var string
+     * @var XmlInjectable
      */
     private $partyClass;
     /**
-     * @var string
+     * @var XmlInjectable
      */
     private $partyCode;
 
     public function inject(DOMDocument $dom)
     {
-        $element = $dom->createElementNS(
-            'http://x-road.eu/xsd/representation.xsd',
-            'representedParty'
-        );
-
-        if ($this->partyClass !== '') {
-            $element->appendChild(
-                $dom->createElementNS(
-                    'http://x-road.eu/xsd/representation.xsd',
-                    'partyClass',
-                    $this->partyClass
-                )
-            );
-        }
-
-        $element->appendChild(
-            $dom->createElementNS(
-                'http://x-road.eu/xsd/representation.xsd',
-                'partyCode',
-                $this->partyCode
-            )
-        );
-
         $elements = $dom->getElementsByTagNameNS(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header'
         );
 
-        $elements->item(0)->appendChild($element);
+        $elements->item(0)->appendChild(
+            $dom->createElementNS(
+                'http://x-road.eu/xsd/representation.xsd',
+                'representedParty'
+            )
+        );
+
+        $this->partyClass->inject($dom);
+        $this->partyCode->inject($dom);
     }
 
     /**
@@ -60,23 +45,54 @@ final class RepresentedParty implements XmlInjectable
     public static function fromStr(string $value): self
     {
         $parts = explode('/', $value, 2);
-        $partyClass = count($parts) == 2 ? $parts[0] : '';
-        $partyCode = count($parts) == 2 ? $parts[1] : $parts[0];
-
-        return new self($partyClass, $partyCode);
+        if (count($parts) === 2) {
+            return self::create($parts[0], $parts[1]);
+        } else {
+            return self::fromCode($parts[0]);
+        }
     }
 
     public static function create(string $partyClass, string $partyCode)
     {
-        return new self($partyClass, $partyCode);
+        return new self(
+            new ElementInjection(
+                'http://x-road.eu/xsd/representation.xsd',
+                'representedParty',
+                new \DOMElement(
+                    'partyClass',
+                    $partyClass,
+                    'http://x-road.eu/xsd/representation.xsd'
+                )
+            ),
+            new ElementInjection(
+                'http://x-road.eu/xsd/representation.xsd',
+                'representedParty',
+                new \DOMElement(
+                    'partyCode',
+                    $partyCode,
+                    'http://x-road.eu/xsd/representation.xsd'
+                )
+            )
+        );
     }
 
     public static function fromCode(string $partyCode)
     {
-        return new self('', $partyCode);
+        return new self(
+            new None(),
+            new ElementInjection(
+                'http://x-road.eu/xsd/representation.xsd',
+                'representedParty',
+                new \DOMElement(
+                    'partyCode',
+                    $partyCode,
+                    'http://x-road.eu/xsd/representation.xsd'
+                )
+            )
+        );
     }
 
-    private function __construct(string $partyClass, string $partyCode)
+    private function __construct(XmlInjectable $partyClass, XmlInjectable $partyCode)
     {
         $this->partyClass = $partyClass;
         $this->partyCode = $partyCode;
