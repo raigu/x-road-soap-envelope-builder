@@ -89,7 +89,7 @@ final class SoapEnvelopeBuilder
     public function withRepresentedParty(string $representedParty): self
     {
         $elements = $this->elements;
-        $elements['representedParty'] = RepresentedParty::fromStr($representedParty);
+        $elements['representedParty'] = (new RepresentedPartyFactory)->fromStr($representedParty);
 
         return new self($elements);
     }
