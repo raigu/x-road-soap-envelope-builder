@@ -50,7 +50,7 @@ final class RepresentedParty implements XmlInjectable
 
     /**
      * @param string $value represented party data. partyClass is optional.
-     *     format: [{partyClass}]/{partyCode}
+     *     format: [{partyClass}/]{partyCode}
      * @return static
      */
     public static function fromStr(string $value): self
