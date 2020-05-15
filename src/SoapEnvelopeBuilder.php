@@ -50,9 +50,9 @@ final class SoapEnvelopeBuilder
      /**
      * Clone builder and replace userId in SOAP header
      *
-     * @param string $userId the
-     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
-     *                   Example: EE/COM/00000000/sys
+     * @param string $userId the user who is making the request
+     *                   Format: {iso2LetterCountryCode}{personCode}
+     *                   Example: EE0000000000
      * @return self cloned builder with overwritten client data
      */
     public function withUserId(string $userId): self
