@@ -2,13 +2,10 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use Raigu\XRoad\SoapEnvelope\Element\BodyContent;
-use Raigu\XRoad\SoapEnvelope\Element\Client;
-use Raigu\XRoad\SoapEnvelope\Element\Id;
-use Raigu\XRoad\SoapEnvelope\Element\None;
-use Raigu\XRoad\SoapEnvelope\Element\Service;
+use Raigu\XRoad\SoapEnvelope\Element\DeferredFragmentInjection;
+use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
+use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
-use Raigu\XRoad\SoapEnvelope\Element\UserId;
 
 final class SoapEnvelopeBuilder
 {
@@ -28,7 +25,7 @@ final class SoapEnvelopeBuilder
     public function withService(string $service): self
     {
         $elements = $this->elements;
-        $elements['service'] = Service::fromStr($service);
+        $elements['service'] = (new ServiceFactory())->fromStr($service);
 
         return new self($elements);
     }
@@ -44,7 +41,7 @@ final class SoapEnvelopeBuilder
     public function withClient(string $client): self
     {
         $elements = $this->elements;
-        $elements['client'] = Client::fromStr($client);
+        $elements['client'] = (new ClientFactory)->fromStr($client);
 
         return new self($elements);
     }
@@ -52,15 +49,23 @@ final class SoapEnvelopeBuilder
      /**
      * Clone builder and replace userId in SOAP header
      *
-     * @param string $userId the
-     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
-     *                   Example: EE/COM/00000000/sys
+     * @param string $userId the user who is making the request
+     *                   Format: {iso2LetterCountryCode}{personCode}
+     *                   Example: EE0000000000
      * @return self cloned builder with overwritten client data
      */
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements['userId'] = UserId::fromStr($userId);
+        $elements['userId'] = new DOMElementInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            new \DOMElement(
+                'userId',
+                (new ValidatedUserId($userId))->asStr(),
+                'http://x-road.eu/xsd/xroad.xsd'
+            )
+        );
 
         return new self($elements);
     }
@@ -73,7 +78,11 @@ final class SoapEnvelopeBuilder
     public function withBody(string $body): self
     {
         $elements = $this->elements;
-        $elements['body'] = new BodyContent($body);
+        $elements['body'] = new FragmentInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Body',
+            $body
+        );
 
         return new self($elements);
     }
@@ -97,15 +106,14 @@ final class SoapEnvelopeBuilder
     {
         $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" 
                    xmlns:id="http://x-road.eu/xsd/identifiers"
                    xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
-    <SOAP-ENV:Header>
+    <env:Header>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
-    </SOAP-ENV:Header>
-    <SOAP-ENV:Body>
-    </SOAP-ENV:Body>
-</SOAP-ENV:Envelope>
+    </env:Header>
+    <env:Body/>
+</env:Envelope>
 EOD;
 
         $dom = new \DOMDocument();
@@ -124,7 +132,6 @@ EOD;
                 'service' => new UnInitialized('Service not initialized'),
                 'client' => new UnInitialized('Client not initialized'),
                 'body' => new UnInitialized('Body not initialized'),
-                'userId' => new None,
             ]
         );
     }
@@ -140,6 +147,15 @@ EOD;
     private function __construct(array $elements)
     {
         $this->elements = $elements;
-        $this->elements['id'] = Id::random();
+        $this->elements['id'] = new DeferredFragmentInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            function (): string {
+                return sprintf(
+                    '<xrd:id xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">%s</xrd:id>',
+                    bin2hex(random_bytes(16))
+                );
+            }
+        );
     }
 }

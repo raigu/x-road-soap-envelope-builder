@@ -2,9 +2,8 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use Raigu\XRoad\SoapEnvelope\Element\ElementInjection;
+use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
-use Raigu\XRoad\SoapEnvelope\Element\XmlInjectionCollection;
 
 /**
  * I create a represented party element
@@ -21,40 +20,22 @@ final class RepresentedPartyFactory
      */
     public function fromStr(string $representedParty): XmlInjectable
     {
-        $elements = [
-            new ElementInjection(
-                'http://schemas.xmlsoap.org/soap/envelope/',
-                'Header',
-                new \DOMElement(
-                    'representedParty',
-                    '',
-                    'http://x-road.eu/xsd/representation.xsd'
-                )
-            ),
-        ];
+        $fragment = ['<repr:representedParty xmlns:repr="http://x-road.eu/xsd/representation.xsd">'];
+
         $parts = explode('/', $representedParty, 2);
+
         if (count($parts) > 1) {
-            $elements[] = new ElementInjection(
-                'http://x-road.eu/xsd/representation.xsd',
-                'representedParty',
-                new \DOMElement(
-                    'partyClass',
-                    array_shift($parts),
-                    'http://x-road.eu/xsd/representation.xsd'
-                )
-            );
+            $fragment[] = '<repr:partyClass>' . $parts[0] . '</repr:partyClass>';
+            array_shift($parts);
         }
 
-        $elements[] = new ElementInjection(
-            'http://x-road.eu/xsd/representation.xsd',
-            'representedParty',
-            new \DOMElement(
-                'partyCode',
-                array_shift($parts),
-                'http://x-road.eu/xsd/representation.xsd'
-            )
-        );
+        $fragment[] = '<repr:partyCode>' . $parts[0] . '</repr:partyCode>';
+        $fragment[] = '</repr:representedParty>';
 
-        return XmlInjectionCollection::create(...$elements);
+        return new FragmentInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            implode('', $fragment)
+        );
     }
 }

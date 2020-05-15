@@ -5,7 +5,10 @@ namespace Raigu\XRoad\SoapEnvelope\Element;
 use DOMDocument;
 use DOMElement;
 
-final class ElementInjection implements XmlInjectable
+/**
+ * I append DOMElement as child to referred node.
+ */
+final class DOMElementInjection implements XmlInjectable
 {
     /**
      * @var string
@@ -20,7 +23,7 @@ final class ElementInjection implements XmlInjectable
      */
     private $child;
 
-    public function inject(DOMDocument $dom)
+    public function inject(DOMDocument $dom): void
     {
         $elements = $dom->getElementsByTagNameNS($this->parentNS, $this->parentTagName);
         $elements->item(0)->appendChild($this->child);

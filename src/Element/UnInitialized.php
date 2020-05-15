@@ -16,7 +16,7 @@ class UnInitialized implements XmlInjectable
      */
     private $message;
 
-    public function inject(DOMDocument $dom)
+    public function inject(DOMDocument $dom): void
     {
         throw new Exception($this->message);
     }

@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\Element\Service;
+use Raigu\XRoad\SoapEnvelope\ServiceFactory;
 
 class ServiceValidationTest extends TestCase
 {
@@ -11,6 +11,6 @@ class ServiceValidationTest extends TestCase
     public function fromStr_throws_exception_when_invalid_format()
     {
         $this->expectExceptionMessage('Invalid format');
-        Service::fromStr('');
+        (new ServiceFactory)->fromStr('');
     }
 }
