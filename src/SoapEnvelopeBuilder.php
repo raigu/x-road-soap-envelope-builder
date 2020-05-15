@@ -70,6 +70,21 @@ final class SoapEnvelopeBuilder
         return new self($elements);
     }
 
+    /**
+     * Clone builder and replace representedParty in SOAP header.
+     * @see https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
+     * @param string $representedParty string representing representative party. format: [{partyClass}/]{partyCode}
+     *      String is concatenation of represented party class (optional) and code in separated by /.
+     * @return $this
+     */
+    public function withRepresentedParty(string $representedParty): self
+    {
+        $elements = $this->elements;
+        $elements['representedParty'] = RepresentedParty::fromStr($representedParty);
+
+        return new self($elements);
+    }
+
     public function build(): string
     {
         $envelope = <<<EOD
