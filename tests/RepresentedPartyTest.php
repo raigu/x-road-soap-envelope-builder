@@ -50,4 +50,26 @@ EOD
             $elements->item(0)->nodeValue
         );
     }
+
+
+    /**
+     * @test
+     */
+    public function representative_party_class_is_optional()
+    {
+        $sut = RepresentedParty::fromCode('12345678');
+
+        $sut->inject($this->dom);
+
+        $xpath = new DOMXPath($this->dom);
+        $xpath->registerNamespace('e', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $xpath->registerNamespace('r', 'http://x-road.eu/xsd/representation.xsd');
+
+
+        $elements = $xpath->query('/e:Envelope/e:Header/r:representedParty/r:partyClass');
+        $this->assertSame(
+            0,
+            $elements->count()
+        );
+    }
 }

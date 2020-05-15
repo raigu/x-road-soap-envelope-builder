@@ -22,13 +22,15 @@ final class RepresentedParty implements XmlInjectable
             'representedParty'
         );
 
-        $element->appendChild(
-            $dom->createElementNS(
-                'http://x-road.eu/xsd/representation.xsd',
-                'partyClass',
-                $this->partyClass
-            )
-        );
+        if ($this->partyClass !== '') {
+            $element->appendChild(
+                $dom->createElementNS(
+                    'http://x-road.eu/xsd/representation.xsd',
+                    'partyClass',
+                    $this->partyClass
+                )
+            );
+        }
 
         $element->appendChild(
             $dom->createElementNS(
@@ -51,6 +53,11 @@ final class RepresentedParty implements XmlInjectable
         [$partyClass, $partyCode] = explode('/', $value);
 
         return new self($partyClass, $partyCode);
+    }
+
+    public static function fromCode(string $partyCode)
+    {
+        return new self('', $partyCode);
     }
 
     private function __construct(string $partyClass, string $partyCode)
