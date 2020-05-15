@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Raigu\XRoad\SoapEnvelope\ClientFactory;
 use Raigu\XRoad\SoapEnvelope\Element\Client;
 
 class ClientValidationTest extends TestCase
@@ -11,6 +12,6 @@ class ClientValidationTest extends TestCase
     public function fromStr_throws_exception_when_invalid_format()
     {
         $this->expectExceptionMessage('Invalid format');
-        Client::fromStr('');
+        (new ClientFactory)->fromStr('');
     }
 }

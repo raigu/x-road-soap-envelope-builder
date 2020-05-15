@@ -43,7 +43,7 @@ final class SoapEnvelopeBuilder
     public function withClient(string $client): self
     {
         $elements = $this->elements;
-        $elements['client'] = Client::fromStr($client);
+        $elements['client'] = (new ClientFactory)->fromStr($client);
 
         return new self($elements);
     }
