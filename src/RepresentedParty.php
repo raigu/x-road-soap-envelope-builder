@@ -55,6 +55,11 @@ final class RepresentedParty implements XmlInjectable
         return new self($partyClass, $partyCode);
     }
 
+    public static function create(string $partyClass, string $partyCode)
+    {
+        return new self($partyClass, $partyCode);
+    }
+
     public static function fromCode(string $partyCode)
     {
         return new self('', $partyCode);

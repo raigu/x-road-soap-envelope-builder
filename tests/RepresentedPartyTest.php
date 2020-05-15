@@ -29,7 +29,7 @@ EOD
      */
     public function injects_representative_into_SOAP_Header()
     {
-        $sut = RepresentedParty::fromStr('COM/12345678');
+        $sut = RepresentedParty::create('COM', '12345678');
 
         $sut->inject($this->dom);
 
