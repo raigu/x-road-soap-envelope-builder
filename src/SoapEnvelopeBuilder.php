@@ -113,8 +113,7 @@ final class SoapEnvelopeBuilder
     <SOAP-ENV:Header>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
-    <SOAP-ENV:Body>
-    </SOAP-ENV:Body>
+    <SOAP-ENV:Body/>
 </SOAP-ENV:Envelope>
 EOD;
 
