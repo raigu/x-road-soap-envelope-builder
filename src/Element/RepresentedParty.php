@@ -11,30 +11,15 @@ use DOMDocument;
 final class RepresentedParty implements XmlInjectable
 {
     /**
-     * @var XmlInjectable
+     * @var XmlInjectable[]
      */
-    private $partyClass;
-    /**
-     * @var XmlInjectable
-     */
-    private $partyCode;
+    private $elements;
 
     public function inject(DOMDocument $dom)
     {
-        $elements = $dom->getElementsByTagNameNS(
-            'http://schemas.xmlsoap.org/soap/envelope/',
-            'Header'
-        );
-
-        $elements->item(0)->appendChild(
-            $dom->createElementNS(
-                'http://x-road.eu/xsd/representation.xsd',
-                'representedParty'
-            )
-        );
-
-        $this->partyClass->inject($dom);
-        $this->partyCode->inject($dom);
+        foreach ($this->elements as $element) {
+            $element->inject($dom);
+        }
     }
 
     /**
@@ -79,7 +64,6 @@ final class RepresentedParty implements XmlInjectable
     public static function fromCode(string $partyCode)
     {
         return new self(
-            new None(),
             new ElementInjection(
                 'http://x-road.eu/xsd/representation.xsd',
                 'representedParty',
@@ -92,9 +76,21 @@ final class RepresentedParty implements XmlInjectable
         );
     }
 
-    private function __construct(XmlInjectable $partyClass, XmlInjectable $partyCode)
+    private function __construct(XmlInjectable ...$elements)
     {
-        $this->partyClass = $partyClass;
-        $this->partyCode = $partyCode;
+        $this->elements = array_merge(
+            [
+                new ElementInjection(
+                    'http://schemas.xmlsoap.org/soap/envelope/',
+                    'Header',
+                    new \DOMElement(
+                        'representedParty',
+                        '',
+                        'http://x-road.eu/xsd/representation.xsd'
+                    )
+                ),
+            ],
+            $elements
+        );
     }
 }
