@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\UserId;
+use Raigu\XRoad\SoapEnvelope\Element\UserId;
 
 class UserIdValidationTest extends TestCase
 {

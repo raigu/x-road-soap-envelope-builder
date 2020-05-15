@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\RepresentedParty;
-use Raigu\XRoad\SoapEnvelope\XmlInjectable;
+use Raigu\XRoad\SoapEnvelope\Element\RepresentedParty;
+use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
 final class RepresentedPartyTest extends TestCase
 {

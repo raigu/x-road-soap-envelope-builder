@@ -2,6 +2,15 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+use Raigu\XRoad\SoapEnvelope\Element\BodyContent;
+use Raigu\XRoad\SoapEnvelope\Element\Client;
+use Raigu\XRoad\SoapEnvelope\Element\Id;
+use Raigu\XRoad\SoapEnvelope\Element\None;
+use Raigu\XRoad\SoapEnvelope\Element\RepresentedParty;
+use Raigu\XRoad\SoapEnvelope\Element\Service;
+use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
+use Raigu\XRoad\SoapEnvelope\Element\UserId;
+
 final class SoapEnvelopeBuilder
 {
     /**
