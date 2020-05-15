@@ -32,7 +32,7 @@ final class RepresentedPartyFactory
         $fragment[] = '<repr:partyCode>' . $parts[0] . '</repr:partyCode>';
         $fragment[] = '</repr:representedParty>';
 
-        return FragmentInjection::create(
+        return new FragmentInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             implode('', $fragment)
