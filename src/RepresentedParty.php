@@ -48,9 +48,16 @@ final class RepresentedParty implements XmlInjectable
         $elements->item(0)->appendChild($element);
     }
 
+    /**
+     * @param string $value represented party data. partyClass is optional.
+     *     format: [{partyClass}]/{partyCode}
+     * @return static
+     */
     public static function fromStr(string $value): self
     {
-        [$partyClass, $partyCode] = explode('/', $value);
+        $parts = explode('/', $value, 2);
+        $partyClass = count($parts) == 2 ? $parts[0] : '';
+        $partyCode = count($parts) == 2 ? $parts[1] : $parts[0];
 
         return new self($partyClass, $partyCode);
     }

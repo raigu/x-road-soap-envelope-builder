@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Raigu\XRoad\SoapEnvelope\RepresentedParty;
+use Raigu\XRoad\SoapEnvelope\XmlInjectable;
 
 final class RepresentedPartyTest extends TestCase
 {
@@ -70,6 +71,17 @@ EOD
         $this->assertSame(
             0,
             $elements->count()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function can_be_created_from_string()
+    {
+        $this->assertInstanceOf(
+            XmlInjectable::class,
+            RepresentedParty::fromStr('')
         );
     }
 }
