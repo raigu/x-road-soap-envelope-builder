@@ -1,13 +1,13 @@
 <?php
 
-namespace Raigu\XRoad\SoapEnvelope;
+namespace Raigu\XRoad\SoapEnvelope\Element;
 
 use DOMDocument;
 
 /**
- * I am a service part of X-Road SOAP Envelope
+ * I am a client part of X-Road SOAP Envelope
  */
-class Service implements XmlInjectable
+class Client implements XmlInjectable
 {
     /**
      * @var array
@@ -16,22 +16,23 @@ class Service implements XmlInjectable
 
     public function inject(DOMDocument $dom)
     {
-        $service = $dom->createElementNS(
+        $client = $dom->createElementNS(
             'http://x-road.eu/xsd/xroad.xsd',
-            'service'
+            'client'
         );
 
         $objectType = $dom->createAttributeNS(
             'http://x-road.eu/xsd/identifiers',
             'objectType'
         );
-        $objectType->value = 'SERVICE';
-        $service->appendChild($objectType);
+        $objectType->value = 'SUBSYSTEM';
+        $client->appendChild($objectType);
 
-        $names = ['xRoadInstance', 'memberClass', 'memberCode', 'subsystemCode', 'serviceCode', 'serviceVersion'];
+        $names = ['xRoadInstance', 'memberClass', 'memberCode', 'subsystemCode'];
+
 
         foreach (array_combine($names, $this->values) as $name => $value) {
-            $service->appendChild(
+            $client->appendChild(
                 $dom->createElementNS(
                     'http://x-road.eu/xsd/identifiers',
                     $name,
@@ -45,19 +46,19 @@ class Service implements XmlInjectable
             'Header'
         );
 
-        $elements->item(0)->appendChild($service);
+        $elements->item(0)->appendChild($client);
     }
 
     public static function fromStr(string $value): self
     {
         $values = explode('/', $value);
-        if (count($values) !== 6) {
-            throw new \Exception('Could not extract service parameters. Invalid format.');
+        if (count($values) !== 4) {
+            throw new \Exception('Could not extract client parameters. Invalid format.');
         }
         return new self($values);
     }
 
-    private function __construct(array $values)
+    protected function __construct(array $values)
     {
         $this->values = $values;
     }

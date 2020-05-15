@@ -2,10 +2,18 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+use Raigu\XRoad\SoapEnvelope\Element\BodyContent;
+use Raigu\XRoad\SoapEnvelope\Element\Client;
+use Raigu\XRoad\SoapEnvelope\Element\Id;
+use Raigu\XRoad\SoapEnvelope\Element\None;
+use Raigu\XRoad\SoapEnvelope\Element\Service;
+use Raigu\XRoad\SoapEnvelope\Element\UnInitialized;
+use Raigu\XRoad\SoapEnvelope\Element\UserId;
+
 final class SoapEnvelopeBuilder
 {
     /**
-     * @var XmlInjectable[]
+     * @var array
      */
     private $elements;
 
@@ -20,9 +28,9 @@ final class SoapEnvelopeBuilder
     public function withService(string $service): self
     {
         $elements = $this->elements;
-        $elements[0] = Service::fromStr($service);
+        $elements['service'] = Service::fromStr($service);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
     /**
@@ -36,9 +44,9 @@ final class SoapEnvelopeBuilder
     public function withClient(string $client): self
     {
         $elements = $this->elements;
-        $elements[1] = Client::fromStr($client);
+        $elements['client'] = Client::fromStr($client);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
      /**
@@ -52,9 +60,9 @@ final class SoapEnvelopeBuilder
     public function withUserId(string $userId): self
     {
         $elements = $this->elements;
-        $elements[3] = UserId::fromStr($userId);
+        $elements['userId'] = UserId::fromStr($userId);
 
-        return new self(...$elements);
+        return new self($elements);
     }
 
     /**
@@ -65,22 +73,34 @@ final class SoapEnvelopeBuilder
     public function withBody(string $body): self
     {
         $elements = $this->elements;
-        $elements[2] = new BodyContent($body);
+        $elements['body'] = new BodyContent($body);
 
-        return new self(...$elements);
+        return new self($elements);
+    }
+
+    /**
+     * Clone builder and replace representedParty in SOAP header.
+     * @see https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
+     * @param string $representedParty string representing representative party. format: [{partyClass}/]{partyCode}
+     *      String is concatenation of represented party class (optional) and code in separated by /.
+     * @return $this
+     */
+    public function withRepresentedParty(string $representedParty): self
+    {
+        $elements = $this->elements;
+        $elements['representedParty'] = (new RepresentedPartyFactory)->fromStr($representedParty);
+
+        return new self($elements);
     }
 
     public function build(): string
     {
-        $id = bin2hex(random_bytes(16));
-
         $envelope = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
                    xmlns:id="http://x-road.eu/xsd/identifiers"
                    xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
     <SOAP-ENV:Header>
-        <xrd:id>{$id}</xrd:id>
         <xrd:protocolVersion>4.0</xrd:protocolVersion>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
@@ -100,11 +120,12 @@ EOD;
 
     public static function create(): self
     {
-        return new self(
-            new UnInitialized('Service not initialized'),
-            new UnInitialized('Client not initialized'),
-            new UnInitialized('Body not initialized'),
-            new None
+        return new self([
+                'service' => new UnInitialized('Service not initialized'),
+                'client' => new UnInitialized('Client not initialized'),
+                'body' => new UnInitialized('Body not initialized'),
+                'userId' => new None,
+            ]
         );
     }
 
@@ -116,8 +137,9 @@ EOD;
             ->withBody('<stub xmlns="https://stub.ee"></stub>');
     }
 
-    private function __construct(XmlInjectable ...$elements)
+    private function __construct(array $elements)
     {
         $this->elements = $elements;
+        $this->elements['id'] = Id::random();
     }
 }

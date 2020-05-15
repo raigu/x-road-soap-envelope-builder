@@ -169,4 +169,26 @@ final class SoapEnvelopeBuilderTest extends TestCase
             $id($envelope2)
         );
     }
+
+    /**
+     * @test
+     */
+    public function adds_representedParty_into_SOAP_envelope()
+    {
+        $envelope = SoapEnvelopeBuilder::stub()
+            ->withRepresentedParty(
+                'COM/12345678'
+            )
+            ->build();
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($envelope);
+        $xpath = new DOMXPath($dom);
+
+        $xpath->registerNamespace('e', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $xpath->registerNamespace('r', 'http://x-road.eu/xsd/representation.xsd');
+
+        $elements = $xpath->query('/e:Envelope/e:Header/r:representedParty');
+        $this->assertEquals(1, $elements->length, 'Must contain element "representedParty"');
+    }
 }

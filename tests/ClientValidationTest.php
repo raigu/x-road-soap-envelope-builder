@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\Client;
+use Raigu\XRoad\SoapEnvelope\Element\Client;
 
 class ClientValidationTest extends TestCase
 {
