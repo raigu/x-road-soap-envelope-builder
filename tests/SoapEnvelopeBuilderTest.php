@@ -1,7 +1,10 @@
 <?php
 
+namespace Raigu\XRoad\SoapEnvelope;
+
+use DOMDocument;
+use DOMXPath;
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\SoapEnvelopeBuilder;
 
 final class SoapEnvelopeBuilderTest extends TestCase
 {

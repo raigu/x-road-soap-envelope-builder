@@ -1,7 +1,8 @@
 <?php
 
+namespace Raigu\XRoad\SoapEnvelope;
+
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\ServiceFactory;
 
 class ServiceValidationTest extends TestCase
 {
