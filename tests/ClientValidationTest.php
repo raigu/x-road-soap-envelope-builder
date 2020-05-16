@@ -3,7 +3,6 @@
 namespace Raigu\XRoad\SoapEnvelope;
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\Element\Client;
 
 class ClientValidationTest extends TestCase
 {
