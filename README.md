@@ -8,8 +8,6 @@
 
 PHP library for generating a SOAP envelope for X-Road request.
 
-It is a stand-alone library used in [raigu/x-road-client](https://github.com/raigu/x-road-client).
-
 # Requirements
 
 * php 7.2+
