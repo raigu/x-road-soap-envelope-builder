@@ -11,7 +11,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
  */
 final class ClientFactory
 {
-/**
+    /**
      * @param string $reference
      * @return XmlInjectable
      */

@@ -46,7 +46,7 @@ final class SoapEnvelopeBuilder
         return new self($elements);
     }
 
-     /**
+    /**
      * Clone builder and replace userId in SOAP header
      *
      * @param string $userId the user who is making the request
