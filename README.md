@@ -2,6 +2,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://travis-ci.com/raigu/x-road-soap-envelope-builder.svg?branch=master)](https://travis-ci.com/raigu/x-road-soap-envelope-builder)
 [![codecov](https://codecov.io/gh/raigu/x-road-soap-envelope-builder/branch/master/graph/badge.svg)](https://codecov.io/gh/raigu/x-road-soap-envelope-builder)
+[![Scrutinizer](https://scrutinizer-ci.com/g/raigu/x-road-soap-envelope-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/raigu/x-road-soap-envelope-builder/)
 
 # x-road-soap-envelope-builder
 
