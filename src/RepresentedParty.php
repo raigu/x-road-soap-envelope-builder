@@ -2,10 +2,8 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 use Traversable;
 
 /**
@@ -16,20 +14,8 @@ use Traversable;
  * I fallow the specification "Third Party Representation Extension"
  * @see https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
  */
-final class RepresentedParty implements XmlInjectable
+final class RepresentedParty extends AggregatedElement
 {
-    /**
-     * @var XmlInjectable[]
-     */
-    private $elements;
-
-    public function inject(DOMDocument $dom): void
-    {
-        foreach ($this->elements as $element) {
-            $element->inject($dom);
-        }
-    }
-
     /**
      * RepresentedParty constructor.
      * @param Traversable $reference iterator over data describing represented
@@ -38,7 +24,7 @@ final class RepresentedParty implements XmlInjectable
      */
     public function __construct(Traversable $reference)
     {
-        $this->elements = [
+        $elements = [
             new FragmentInjection(
                 'http://schemas.xmlsoap.org/soap/envelope/',
                 'Header',
@@ -47,11 +33,13 @@ final class RepresentedParty implements XmlInjectable
         ];
 
         foreach ($reference as $name => $value) {
-           $this->elements[] = new DOMElementInjection(
+            $elements[] = new DOMElementInjection(
                 'http://x-road.eu/xsd/representation.xsd',
                 'representedParty',
                 new \DOMElement($name, $value, 'http://x-road.eu/xsd/representation.xsd')
             );
         }
+
+        parent::__construct(...$elements);
     }
 }

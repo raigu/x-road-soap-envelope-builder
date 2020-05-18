@@ -2,10 +2,8 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 use Traversable;
 
 /**
@@ -13,19 +11,8 @@ use Traversable;
  *
  * I can inject myself into SOAP envelope header
  */
-final class Service implements XmlInjectable
+final class Service extends AggregatedElement
 {
-    /**
-     * @var XmlInjectable[]
-     */
-    private $elements;
-
-    public function inject(DOMDocument $dom): void
-    {
-        foreach ($this->elements as $injection) {
-            $injection->inject($dom);
-        }
-    }
 
     /**
      * @param Traversable $reference iterator over data describing what service
@@ -34,7 +21,7 @@ final class Service implements XmlInjectable
      */
     public function __construct(Traversable $reference)
     {
-        $this->elements = [
+        $elements = [
             new FragmentInjection(
                 'http://schemas.xmlsoap.org/soap/envelope/',
                 'Header',
@@ -45,13 +32,14 @@ final class Service implements XmlInjectable
         ];
 
 
-
         foreach ($reference as $name => $value) {
-            $this->elements[] = new DOMElementInjection(
+            $elements[] = new DOMElementInjection(
                 'http://x-road.eu/xsd/xroad.xsd',
                 'service',
                 new \DOMElement($name, $value, 'http://x-road.eu/xsd/identifiers')
             );
         }
+
+        parent::__construct(...$elements);
     }
 }
