@@ -6,6 +6,11 @@ use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
+/**
+ * I am an issue reference number of X-Road message
+ *
+ * I can inject myself into SOAP envelope header
+ */
 final class StrAsIssue implements XmlInjectable
 {
     /**

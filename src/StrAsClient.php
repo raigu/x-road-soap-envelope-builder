@@ -8,8 +8,9 @@ use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
 /**
- * I create a service element of X-Road SOAP envelope
- * which can inject itself into proper place in DOMDocument
+ * I am a client who makes X-Road request
+ *
+ * I can inject myself into SOAP envelope header
  */
 final class StrAsClient implements XmlInjectable
 {

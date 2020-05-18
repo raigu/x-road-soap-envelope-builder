@@ -7,6 +7,11 @@ use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
+/**
+ * I am a service of X-Road
+ *
+ * I can inject myself into SOAP envelope header
+ */
 final class StrAsService implements XmlInjectable
 {
     /**

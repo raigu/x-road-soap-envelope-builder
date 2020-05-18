@@ -6,6 +6,11 @@ use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
+/**
+ * I am an user id of the person who initiates the X-Road request.
+ *
+ * I can inject myself into SOAP envelope header
+ */
 final class StrAsUserId implements XmlInjectable
 {
     /**

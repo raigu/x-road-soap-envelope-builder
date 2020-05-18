@@ -8,9 +8,9 @@ use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
 /**
- * I am represented party in X-Road SOAP Envelope.
+ * I am the party who is represented by client.
  *
- * I know how to inject myself into SOAP Envelope.
+ * I know how to inject myself into SOAP envelope header.
  *
  * I fallow the specification "Third Party Representation Extension"
  * @see https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
