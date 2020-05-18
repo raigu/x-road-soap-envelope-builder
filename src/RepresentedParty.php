@@ -18,11 +18,12 @@ final class RepresentedParty extends AggregatedElement
 {
     /**
      * RepresentedParty constructor.
-     * @param Traversable $reference iterator over data describing represented
-     *        party. Iterator must return key value pairs where key represents
-     *        the tag name and value tag value in SOAP header.
+     * @param Traversable|array $reference associative array of data describing
+     *        the party being represented by client. Data is embedded into
+     *        proper place in SOAP Header. The key must be tag name and value
+     *        tag value.
      */
-    public function __construct(Traversable $reference)
+    public function __construct($reference)
     {
         $elements = [
             new FragmentInjection(

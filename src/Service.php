@@ -15,11 +15,11 @@ final class Service extends AggregatedElement
 {
 
     /**
-     * @param Traversable $reference iterator over data describing what service
-     *        is requested.Iterator must return key value pairs where key
-     *        represents the tag name and value tag value in SOAP header.
+     * @param Traversable|array $reference associative array of data describing
+     *        what service is requested. Data is embedded into proper place in
+     *        SOAP Header. The key must be tag name and value tag value.
      */
-    public function __construct(Traversable $reference)
+    public function __construct($reference)
     {
         $elements = [
             new FragmentInjection(

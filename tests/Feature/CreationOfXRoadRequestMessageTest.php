@@ -3,16 +3,16 @@
 namespace Feature;
 
 use PHPUnit\Framework\TestCase;
-use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
-use Raigu\XRoad\SoapEnvelope\ServiceRequest;
 use Raigu\XRoad\SoapEnvelope\Client;
+use Raigu\XRoad\SoapEnvelope\ClientReference;
 use Raigu\XRoad\SoapEnvelope\Id;
 use Raigu\XRoad\SoapEnvelope\Issue;
 use Raigu\XRoad\SoapEnvelope\RepresentedParty;
-use Raigu\XRoad\SoapEnvelope\Service;
-use Raigu\XRoad\SoapEnvelope\ClientReference;
 use Raigu\XRoad\SoapEnvelope\RepresentedPartyReference;
+use Raigu\XRoad\SoapEnvelope\Service;
 use Raigu\XRoad\SoapEnvelope\ServiceReference;
+use Raigu\XRoad\SoapEnvelope\ServiceRequest;
+use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
 use Raigu\XRoad\SoapEnvelope\UserId;
 
 final class CreationOfXRoadRequestMessageTest extends TestCase

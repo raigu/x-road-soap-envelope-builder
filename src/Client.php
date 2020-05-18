@@ -15,12 +15,12 @@ final class Client extends AggregatedElement
 {
 
     /**
-     * @param Traversable $reference iterator over data describing client
-     *        who is making the X-Road request. Iterator must return key value
-     *        pairs where key represents the tag name and value tag value in
-     *        SOAP header.
+     * @param Traversable|array $reference associative array of data describing
+     *        client who is making the X-Road request. Data is embedded into
+     *        proper place in SOAP Header. The key must be tag name and value
+     *        tag value.
      */
-    public function __construct(Traversable $reference)
+    public function __construct($reference)
     {
         $elements = [
             new FragmentInjection(
