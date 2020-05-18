@@ -6,7 +6,12 @@ use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
-final class StrAsBody implements XmlInjectable
+/**
+ * I am a request of an X-Road service.
+ *
+ * I can inject myself into SOAP Envelope Body.
+ */
+final class StrAsServiceRequest implements XmlInjectable
 {
     /**
      * @var XmlInjectable

@@ -4,7 +4,7 @@ namespace Feature;
 
 use PHPUnit\Framework\TestCase;
 use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
-use Raigu\XRoad\SoapEnvelope\StrAsBody;
+use Raigu\XRoad\SoapEnvelope\StrAsServiceRequest;
 use Raigu\XRoad\SoapEnvelope\StrAsClient;
 use Raigu\XRoad\SoapEnvelope\StrAsId;
 use Raigu\XRoad\SoapEnvelope\StrAsIssue;
@@ -22,7 +22,7 @@ final class CreationOfXRoadRequestMessageTest extends TestCase
         $sut = new SoapEnvelope(
             new StrAsClient('EE/GOV/MEMBER1/SUBSYSTEM1'),
             new StrAsService('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1'),
-            new StrAsBody(
+            new StrAsServiceRequest(
                 '<ns1:exampleService xmlns:ns1="http://producer.x-road.eu">' .
                 '<exampleInput>foo</exampleInput>' .
                 '</ns1:exampleService>'
