@@ -13,8 +13,6 @@ class ClientTest extends TestCase
      */
     public function can_be_created_from_associative_array()
     {
-
-
         $dom = new DOMDocument;
         $dom->loadXML(<<<EOD
 <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"> 
