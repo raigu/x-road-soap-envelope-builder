@@ -7,14 +7,14 @@ use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
 /**
- * I am an issue reference number of X-Road message
+ * I am an user id of the person who initiates the X-Road request.
  *
  * I can inject myself into SOAP envelope header
  */
-final class StrAsIssue implements XmlInjectable
+final class UserId implements XmlInjectable
 {
     /**
-     * @var DOMElementInjection
+     * @var XmlInjectable
      */
     private $element;
 
@@ -23,14 +23,14 @@ final class StrAsIssue implements XmlInjectable
         $this->element->inject($dom);
     }
 
-    public function __construct(string $issue)
+    public function __construct(string $userId)
     {
         $this->element = new DOMElementInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             new \DOMElement(
-                'issue',
-                $issue,
+                'userId',
+                (new ValidatedUserId($userId))->asStr(),
                 'http://x-road.eu/xsd/xroad.xsd'
             )
         );

@@ -2,34 +2,29 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+use IteratorAggregate;
+
 /**
  * I am a string acting as X-Road Client Reference
  */
-final class StrAsClientReference implements XRoadMember
+final class ClientReference implements IteratorAggregate
 {
     /**
      * @var string[]
      */
     private $parts;
 
-    public function xRoadInstance(): string
+    public function getIterator()
     {
-        return $this->parts[0];
-    }
-
-    public function memberClass(): string
-    {
-        return $this->parts[1];
-    }
-
-    public function memberCode(): string
-    {
-        return $this->parts[2];
-    }
-
-    public function subSystemCode(): string
-    {
-        return $this->parts[3];
+        yield from array_combine(
+            [
+                'xRoadInstance',
+                'memberClass',
+                'memberCode',
+                'subsystemCode',
+            ],
+            $this->parts
+        );
     }
 
     public function __construct(string $reference)

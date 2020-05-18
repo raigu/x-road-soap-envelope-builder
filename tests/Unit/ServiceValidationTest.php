@@ -13,6 +13,6 @@ class ServiceValidationTest extends TestCase
     {
         $this->expectExceptionMessage('Invalid format');
 
-        new StrAsServiceReference('');
+        new ServiceReference('');
     }
 }

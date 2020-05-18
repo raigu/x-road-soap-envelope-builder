@@ -4,13 +4,16 @@ namespace Feature;
 
 use PHPUnit\Framework\TestCase;
 use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
-use Raigu\XRoad\SoapEnvelope\StrAsServiceRequest;
-use Raigu\XRoad\SoapEnvelope\StrAsClient;
-use Raigu\XRoad\SoapEnvelope\StrAsId;
-use Raigu\XRoad\SoapEnvelope\StrAsIssue;
-use Raigu\XRoad\SoapEnvelope\StrAsRepresentedParty;
-use Raigu\XRoad\SoapEnvelope\StrAsService;
-use Raigu\XRoad\SoapEnvelope\StrAsUserId;
+use Raigu\XRoad\SoapEnvelope\ServiceRequest;
+use Raigu\XRoad\SoapEnvelope\Client;
+use Raigu\XRoad\SoapEnvelope\Id;
+use Raigu\XRoad\SoapEnvelope\Issue;
+use Raigu\XRoad\SoapEnvelope\RepresentedParty;
+use Raigu\XRoad\SoapEnvelope\Service;
+use Raigu\XRoad\SoapEnvelope\ClientReference;
+use Raigu\XRoad\SoapEnvelope\RepresentedPartyReference;
+use Raigu\XRoad\SoapEnvelope\ServiceReference;
+use Raigu\XRoad\SoapEnvelope\UserId;
 
 final class CreationOfXRoadRequestMessageTest extends TestCase
 {
@@ -20,17 +23,23 @@ final class CreationOfXRoadRequestMessageTest extends TestCase
     public function creates_SOAP_Envelope()
     {
         $sut = new SoapEnvelope(
-            new StrAsClient('EE/GOV/MEMBER1/SUBSYSTEM1'),
-            new StrAsService('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1'),
-            new StrAsServiceRequest(
+            new Client(
+                new ClientReference('EE/GOV/MEMBER1/SUBSYSTEM1')
+            ),
+            new Service(
+                new ServiceReference('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1')
+            ),
+            new ServiceRequest(
                 '<ns1:exampleService xmlns:ns1="http://producer.x-road.eu">' .
                 '<exampleInput>foo</exampleInput>' .
                 '</ns1:exampleService>'
             ),
-            new StrAsRepresentedParty('COM/MEMBER3'),
-            new StrAsId('4894e35d-bf0f-44a6-867a-8e51f1daa7e0'),
-            new StrAsUserId('EE12345678901'),
-            new StrAsIssue('12345')
+            new RepresentedParty(
+                new RepresentedPartyReference('COM/MEMBER3')
+            ),
+            new Id('4894e35d-bf0f-44a6-867a-8e51f1daa7e0'),
+            new UserId('EE12345678901'),
+            new Issue('12345')
         );
 
         $actual = $sut->asStr();

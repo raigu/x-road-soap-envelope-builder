@@ -13,6 +13,6 @@ class ClientValidationTest extends TestCase
     {
         $this->expectExceptionMessage('Invalid format');
 
-        new StrAsClientReference('');
+        new ClientReference('');
     }
 }

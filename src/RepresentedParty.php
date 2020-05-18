@@ -15,7 +15,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
  * I fallow the specification "Third Party Representation Extension"
  * @see https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html
  */
-final class StrAsRepresentedParty implements XmlInjectable
+final class RepresentedParty implements XmlInjectable
 {
     /**
      * @var XmlInjectable[]
@@ -29,7 +29,7 @@ final class StrAsRepresentedParty implements XmlInjectable
         }
     }
 
-    public function __construct(string $reference)
+    public function __construct(RepresentedPartyReference $reference)
     {
         $this->elements = [
             new FragmentInjection(
@@ -39,11 +39,8 @@ final class StrAsRepresentedParty implements XmlInjectable
             ),
         ];
 
-        $names = ['partyClass', 'partyCode'];
-        $values = explode('/', $reference);
-
-        foreach (array_combine($names, $values) as $name => $value) {
-            $this->elements[] = new DOMElementInjection(
+        foreach ($reference as $name => $value) {
+           $this->elements[] = new DOMElementInjection(
                 'http://x-road.eu/xsd/representation.xsd',
                 'representedParty',
                 new \DOMElement($name, $value, 'http://x-road.eu/xsd/representation.xsd')

@@ -11,7 +11,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
  *
  * I can inject myself into SOAP envelope header
  */
-final class StrAsId implements XmlInjectable
+final class Id implements XmlInjectable
 {
     /**
      * @var XmlInjectable

@@ -12,7 +12,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
  *
  * I can inject myself into SOAP envelope header
  */
-final class StrAsClient implements XmlInjectable
+final class Client implements XmlInjectable
 {
     /**
      * @var XmlInjectable[]
@@ -26,7 +26,7 @@ final class StrAsClient implements XmlInjectable
         }
     }
 
-    public function __construct(string $reference)
+    public function __construct(ClientReference $reference)
     {
         $this->injections = [
             new FragmentInjection(
@@ -38,10 +38,7 @@ final class StrAsClient implements XmlInjectable
             ),
         ];
 
-        $names = ['xRoadInstance', 'memberClass', 'memberCode', 'subsystemCode'];
-        $values = explode('/', $reference);
-
-        foreach (array_combine($names, $values) as $name => $value) {
+        foreach ($reference as $name => $value) {
             $this->injections[] = new DOMElementInjection(
                 'http://x-road.eu/xsd/xroad.xsd',
                 'client',
