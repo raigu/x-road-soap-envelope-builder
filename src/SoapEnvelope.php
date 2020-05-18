@@ -44,12 +44,10 @@ EOD;
         return $dom->saveXML();
     }
 
-    public static function create(XmlInjectable ...$elements)
-    {
-        return new self(...$elements);
-    }
-
-    private function __construct(XmlInjectable ...$elements)
+    /**
+     * @param XmlInjectable[] $elements
+     */
+    public function __construct(XmlInjectable ...$elements)
     {
         $this->elements = $elements;
 

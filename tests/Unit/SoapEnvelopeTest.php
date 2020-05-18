@@ -11,7 +11,7 @@ class SoapEnvelopeTest extends TestCase
      */
     public function returns_SOAP_Envelope_xml_compatible_with_schema()
     {
-        $envelope = SoapEnvelope::create(
+        $envelope = new SoapEnvelope(
             new NoneElement
         );
 

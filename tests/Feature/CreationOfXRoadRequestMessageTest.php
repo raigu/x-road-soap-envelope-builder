@@ -19,7 +19,7 @@ final class CreationOfXRoadRequestMessageTest extends TestCase
      */
     public function creates_SOAP_Envelope()
     {
-        $sut = SoapEnvelope::create(
+        $sut = new SoapEnvelope(
             new StrAsClient('EE/GOV/MEMBER1/SUBSYSTEM1'),
             new StrAsService('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1'),
             new StrAsBody(

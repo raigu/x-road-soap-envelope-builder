@@ -5,7 +5,7 @@ namespace Raigu\XRoad\SoapEnvelope;
 final class StrAsClientReference implements XRoadMember
 {
     /**
-     * @var string
+     * @var string[]
      */
     private $parts;
 
