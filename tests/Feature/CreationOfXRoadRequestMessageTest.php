@@ -11,7 +11,6 @@ use Raigu\XRoad\SoapEnvelope\StrAsIssue;
 use Raigu\XRoad\SoapEnvelope\StrAsRepresentedParty;
 use Raigu\XRoad\SoapEnvelope\StrAsService;
 use Raigu\XRoad\SoapEnvelope\StrAsUserId;
-use Raigu\XRoad\SoapEnvelope\XRoadSoapMessageElementsFactory;
 
 final class CreationOfXRoadRequestMessageTest extends TestCase
 {
