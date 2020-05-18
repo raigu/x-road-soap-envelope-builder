@@ -27,6 +27,12 @@ final class Client implements XmlInjectable
         }
     }
 
+    /**
+     * @param Traversable $reference iterator over data describing client
+     *        who is making the X-Road request. Iterator must return key value
+     *        pairs where key represents the tag name and value tag value in
+     *        SOAP header.
+     */
     public function __construct(Traversable $reference)
     {
         $this->injections = [

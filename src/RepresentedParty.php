@@ -30,6 +30,12 @@ final class RepresentedParty implements XmlInjectable
         }
     }
 
+    /**
+     * RepresentedParty constructor.
+     * @param Traversable $reference iterator over data describing represented
+     *        party. Iterator must return key value pairs where key represents
+     *        the tag name and value tag value in SOAP header.
+     */
     public function __construct(Traversable $reference)
     {
         $this->elements = [

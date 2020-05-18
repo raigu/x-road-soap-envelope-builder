@@ -8,7 +8,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 /**
  * I am a SOAP Envelope.
  *
- * I can return myself as string
+ * I can construct myself from given elements and return myself as string.
  */
 final class SoapEnvelope
 {

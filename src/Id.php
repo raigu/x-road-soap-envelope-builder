@@ -23,6 +23,12 @@ final class Id implements XmlInjectable
         $this->element->inject($dom);
     }
 
+    /**
+     * @param string $id Unique identifier of X-Road message.
+     *             According to the specification recommended
+     *             form of message id is UUID.
+     * @see https://www.x-tee.ee/docs/live/xroad/pr-mess_x-road_message_protocol.html#22-message-headers
+     */
     public function __construct(string $id)
     {
         $this->element = new DOMElementInjection(

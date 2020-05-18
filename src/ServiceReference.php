@@ -29,7 +29,11 @@ final class ServiceReference implements \IteratorAggregate
         );
     }
 
-
+    /**
+     * @param string $reference reference to the serice.
+     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}/{serviceCode}/{serviceVerson}
+     *                   Example: EE/GOV/70000310/DHX.Riigi-Teataja/sendDocument/v1
+     */
     public function __construct(string $reference)
     {
         $parts = explode('/', $reference);

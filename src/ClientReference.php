@@ -29,6 +29,11 @@ final class ClientReference implements IteratorAggregate
         );
     }
 
+    /**
+     * @param string $reference reference to the client.
+     *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
+     *                   Example: EE/COM/00000000/sys
+     */
     public function __construct(string $reference)
     {
         $parts = explode('/', $reference);
