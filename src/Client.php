@@ -6,6 +6,7 @@ use DOMDocument;
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
+use Traversable;
 
 /**
  * I am a client who makes X-Road request
@@ -26,7 +27,7 @@ final class Client implements XmlInjectable
         }
     }
 
-    public function __construct(ClientReference $reference)
+    public function __construct(Traversable $reference)
     {
         $this->injections = [
             new FragmentInjection(
