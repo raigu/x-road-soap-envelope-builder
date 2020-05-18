@@ -24,10 +24,11 @@ $ composer require raigu/x-road-soap-envelope-builder
 ## Building SOAP envelope for X-Road request
 
 ```php
+$factory = new XRoadSoapMessageElementsFactory();
 $envelope = SoapEnvelope::create(
-    Service::create('EE/COM/12213008/gathering'),
-    Client::create('EE/GOV/70008440/rr/RR437/v1'),
-    Body::create(<<<EOD
+    $factory->service('EE/COM/12213008/gathering'),
+    $factory->client('EE/GOV/70008440/rr/RR437/v1'),
+    $factory->body(<<<EOD
         <prod:RR437 xmlns:prod="http://rr.x-road.eu/producer">
             <request>
                 <Isikukood>00000000000</Isikukood>
