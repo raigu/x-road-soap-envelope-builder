@@ -24,21 +24,20 @@ $ composer require raigu/x-road-soap-envelope-builder
 ## Building SOAP envelope for X-Road request
 
 ```php
-$builder = \Raigu\XRoad\SoapEnvelope\SoapEnvelopeBuilder::create()
-    ->withService('EE/GOV/70008440/rr/RR437/v1')
-    ->withClient('EE/COM/12213008/gathering')
-    ->withBody(<<<EOD
+$envelope = SoapEnvelope::create(
+    Service::create('EE/COM/12213008/gathering'),
+    Client::create('EE/GOV/70008440/rr/RR437/v1'),
+    Body::create(<<<EOD
         <prod:RR437 xmlns:prod="http://rr.x-road.eu/producer">
             <request>
                 <Isikukood>00000000000</Isikukood>
             </request>
         </prod:RR437>
 EOD;
-    );
+    )
+);
 
-$envelope = $builder->build();
-
-echo $envelope;
+echo $envelope->asStr();
 ```
 
 The method's `withBody` input parameter can be generated from
@@ -48,7 +47,7 @@ The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE).
 See short (1:34) demo [video](https://youtu.be/ziQIwlTtPLA) how to acquire WSDL and generate a request body.
 
 ## Builder methods
-| Method name | Mandatory | Description                                                                                                                                                                                                                                                                           |
+| Factories   | Mandatory | Description                                                                                                                                                                                                                                                                           |
 |-------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | withService | Y         | service id. <br/>Format: `{xRoadInstance}/{memberClass}/{memberCode}/(subsystemCode}/{serviceCode}/{serviceVersion}`                                                                                                                                                                   |
 | withClient  | Y         | client id. <br/>Format: `{xRoadInstance}/{memberClass}/{memberCode}/(subsystemCode}`                                                                                                                                                                                                   |
