@@ -11,7 +11,7 @@ final class CreationOfXRoadRequestMessageTest extends TestCase
     /**
      * @test
      */
-    public function creation_of_SOAP_envelope_with_mandatory_fields()
+    public function creation_of_SOAP_envelope_with_all_fields()
     {
         $factory = new XRoadSoapMessageElementsFactory();
 
