@@ -2,6 +2,11 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+/**
+ * I am a reference of a service in string format acting as an iterator.
+ *
+ * I expose name and value used in SOAP envelope.
+ */
 final class ServiceReference implements \IteratorAggregate
 {
     /**

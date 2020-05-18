@@ -5,7 +5,9 @@ namespace Raigu\XRoad\SoapEnvelope;
 use IteratorAggregate;
 
 /**
- * I am a string acting as X-Road Client Reference
+ * I am a reference of a Client in string format acting as an iterator.
+ *
+ * I expose name and value used in SOAP envelope.
  */
 final class ClientReference implements IteratorAggregate
 {
