@@ -15,7 +15,7 @@ use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 abstract class DOMElementAsSoapHeaderElement implements XmlInjectable
 {
     /**
-     * @var DOMElement
+     * @var XmlInjectable
      */
     private $element;
 

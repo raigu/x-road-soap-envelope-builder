@@ -4,7 +4,6 @@ namespace Raigu\XRoad\SoapEnvelope;
 
 use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\FragmentInjection;
-use Raigu\XRoad\SoapEnvelope\Element\XmlInjectableCollection;
 use Traversable;
 
 /**
