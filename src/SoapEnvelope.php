@@ -2,6 +2,7 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
 use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
 
 /**
@@ -28,9 +29,7 @@ final class SoapEnvelope
 <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" 
                    xmlns:id="http://x-road.eu/xsd/identifiers"
                    xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
-    <env:Header>
-        <xrd:protocolVersion>4.0</xrd:protocolVersion>
-    </env:Header>
+    <env:Header/>
     <env:Body/>
 </env:Envelope>
 EOD;
@@ -53,7 +52,15 @@ EOD;
     private function __construct(XmlInjectable ...$elements)
     {
         $this->elements = $elements;
+
+        $this->elements[] = new DOMElementInjection(
+            'http://schemas.xmlsoap.org/soap/envelope/',
+            'Header',
+            new \DOMElement(
+                'protocolVersion',
+                '4.0',
+                'http://x-road.eu/xsd/xroad.xsd'
+            )
+        );
     }
-
-
 }
