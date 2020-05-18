@@ -2,6 +2,9 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
+/**
+ * I am a string acting as X-Road Client Reference
+ */
 final class StrAsClientReference implements XRoadMember
 {
     /**
