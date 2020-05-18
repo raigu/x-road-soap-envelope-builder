@@ -2,32 +2,23 @@
 
 namespace Raigu\XRoad\SoapEnvelope;
 
-use DOMDocument;
-use Raigu\XRoad\SoapEnvelope\Element\DOMElementInjection;
-use Raigu\XRoad\SoapEnvelope\Element\XmlInjectable;
-
 /**
  * I am an issue reference number of X-Road message
  *
  * I can inject myself into SOAP envelope header
  */
-final class Issue implements XmlInjectable
+final class Issue extends DOMElementAsSoapHeaderElement
 {
     /**
-     * @var DOMElementInjection
+     * @param string $issue Identifies received application, issue or document
+     *                      that was the cause of the service request. This
+     *                      field may be used by the client information system
+     *                      to connect service requests (and responses) to
+     *                      working procedures.
      */
-    private $element;
-
-    public function inject(DOMDocument $dom): void
-    {
-        $this->element->inject($dom);
-    }
-
     public function __construct(string $issue)
     {
-        $this->element = new DOMElementInjection(
-            'http://schemas.xmlsoap.org/soap/envelope/',
-            'Header',
+        parent::__construct(
             new \DOMElement(
                 'issue',
                 $issue,
