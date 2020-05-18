@@ -17,18 +17,18 @@ final class StrAsService implements XmlInjectable
     /**
      * @var XmlInjectable[]
      */
-    private $injectors;
+    private $elements;
 
     public function inject(DOMDocument $dom): void
     {
-        foreach ($this->injections as $injection) {
+        foreach ($this->elements as $injection) {
             $injection->inject($dom);
         }
     }
 
     public function __construct(string $reference)
     {
-        $this->injections = [
+        $this->elements = [
             new FragmentInjection(
                 'http://schemas.xmlsoap.org/soap/envelope/',
                 'Header',
@@ -42,7 +42,7 @@ final class StrAsService implements XmlInjectable
         $values = explode('/', $reference);
 
         foreach (array_combine($names, $values) as $name => $value) {
-            $this->injections[] = new DOMElementInjection(
+            $this->elements[] = new DOMElementInjection(
                 'http://x-road.eu/xsd/xroad.xsd',
                 'service',
                 new \DOMElement($name, $value, 'http://x-road.eu/xsd/identifiers')

@@ -16,16 +16,16 @@ final class StrAsServiceRequest implements XmlInjectable
     /**
      * @var XmlInjectable
      */
-    private $injection;
+    private $element;
 
     public function inject(DOMDocument $dom): void
     {
-        $this->injection->inject($dom);
+        $this->element->inject($dom);
     }
 
     public function __construct(string $serviceRequest)
     {
-        $this->injection = new FragmentInjection(
+        $this->element = new FragmentInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Body',
             $serviceRequest

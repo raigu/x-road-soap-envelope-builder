@@ -16,16 +16,16 @@ final class StrAsUserId implements XmlInjectable
     /**
      * @var XmlInjectable
      */
-    private $injection;
+    private $element;
 
     public function inject(DOMDocument $dom): void
     {
-        $this->injection->inject($dom);
+        $this->element->inject($dom);
     }
 
     public function __construct(string $userId)
     {
-        $this->injection = new DOMElementInjection(
+        $this->element = new DOMElementInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             new \DOMElement(

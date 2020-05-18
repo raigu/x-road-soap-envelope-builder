@@ -16,16 +16,16 @@ final class StrAsIssue implements XmlInjectable
     /**
      * @var DOMElementInjection
      */
-    private $injection;
+    private $element;
 
     public function inject(DOMDocument $dom): void
     {
-        $this->injection->inject($dom);
+        $this->element->inject($dom);
     }
 
     public function __construct(string $issue)
     {
-        $this->injection = new DOMElementInjection(
+        $this->element = new DOMElementInjection(
             'http://schemas.xmlsoap.org/soap/envelope/',
             'Header',
             new \DOMElement(
