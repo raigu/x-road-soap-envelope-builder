@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Raigu\\XRoad\\SoapEnvelope\\": "tests/"
+            "Raigu\\XRoad\\SoapEnvelope\\": "tests/Unit/"
         }
     },
     "require": {
