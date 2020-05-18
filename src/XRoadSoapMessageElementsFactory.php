@@ -39,11 +39,7 @@ final class XRoadSoapMessageElementsFactory
      */
     public function body(string $serviceRequest): XmlInjectable
     {
-        return new FragmentInjection(
-            'http://schemas.xmlsoap.org/soap/envelope/',
-            'Body',
-            $serviceRequest
-        );
+
     }
 
     /**

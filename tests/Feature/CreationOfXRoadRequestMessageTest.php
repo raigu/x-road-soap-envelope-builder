@@ -4,8 +4,13 @@ namespace Feature;
 
 use PHPUnit\Framework\TestCase;
 use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
+use Raigu\XRoad\SoapEnvelope\StrAsBody;
+use Raigu\XRoad\SoapEnvelope\StrAsClient;
 use Raigu\XRoad\SoapEnvelope\StrAsId;
 use Raigu\XRoad\SoapEnvelope\StrAsIssue;
+use Raigu\XRoad\SoapEnvelope\StrAsRepresentedParty;
+use Raigu\XRoad\SoapEnvelope\StrAsService;
+use Raigu\XRoad\SoapEnvelope\StrAsUserId;
 use Raigu\XRoad\SoapEnvelope\XRoadSoapMessageElementsFactory;
 
 final class CreationOfXRoadRequestMessageTest extends TestCase
@@ -15,19 +20,17 @@ final class CreationOfXRoadRequestMessageTest extends TestCase
      */
     public function creates_SOAP_Envelope()
     {
-        $factory = new XRoadSoapMessageElementsFactory();
-
         $sut = SoapEnvelope::create(
-            $factory->client('EE/GOV/MEMBER1/SUBSYSTEM1'),
-            $factory->service('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1'),
-            $factory->body(
+            new StrAsClient('EE/GOV/MEMBER1/SUBSYSTEM1'),
+            new StrAsService('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1'),
+            new StrAsBody(
                 '<ns1:exampleService xmlns:ns1="http://producer.x-road.eu">' .
                 '<exampleInput>foo</exampleInput>' .
                 '</ns1:exampleService>'
             ),
-            $factory->representedParty('COM/MEMBER3'),
+            new StrAsRepresentedParty('COM/MEMBER3'),
             new StrAsId('4894e35d-bf0f-44a6-867a-8e51f1daa7e0'),
-            $factory->userId('EE12345678901'),
+            new StrAsUserId('EE12345678901'),
             new StrAsIssue('12345')
         );
 
