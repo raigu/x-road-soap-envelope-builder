@@ -12,6 +12,7 @@ class ClientValidationTest extends TestCase
     public function fromStr_throws_exception_when_invalid_format()
     {
         $this->expectExceptionMessage('Invalid format');
-        (new ClientFactory)->fromStr('');
+
+        new StrAsClientReference('');
     }
 }
