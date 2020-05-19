@@ -33,7 +33,7 @@ final class SoapEnvelopeBuilder
     /**
      * Clone builder and replace client in SOAP header
      *
-     * @param string $service encoded service.
+     * @param string $client encoded client.
      *                   Format: {xRoadInstance}/{memberClass/{memberCode}/{subsystemCode}
      *                   Example: EE/COM/00000000/sys
      * @return self cloned builder with overwritten client data
