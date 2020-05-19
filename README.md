@@ -4,9 +4,12 @@
 [![codecov](https://codecov.io/gh/raigu/x-road-soap-envelope-builder/branch/master/graph/badge.svg)](https://codecov.io/gh/raigu/x-road-soap-envelope-builder)
 [![Scrutinizer](https://scrutinizer-ci.com/g/raigu/x-road-soap-envelope-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/raigu/x-road-soap-envelope-builder/)
 
-# x-road-soap-envelope-builder
+# x-road-soap-envelope
 
-PHP library for generating a SOAP envelope for X-Road request.
+PHP library for creating a SOAP envelope for X-Road request.
+
+Intended for applications which proxy several SOAP requests and must create SOAP requests dynamically. 
+If you need to integrate only one X-Road service then this library might not be suitable.
 
 # Requirements
 
@@ -16,89 +19,86 @@ PHP library for generating a SOAP envelope for X-Road request.
 # Installation
 
 ```bash
-$ composer require raigu/x-road-soap-envelope-builder
+$ composer require raigu/x-road-soap-envelope
 ``` 
 
 # Usage
 
-## Building SOAP envelope for X-Road request
-
 ```php
-$factory = new XRoadSoapMessageElementsFactory();
-$envelope = SoapEnvelope::create(
-    $factory->service('EE/COM/12213008/gathering'),
-    $factory->client('EE/GOV/70008440/rr/RR437/v1'),
-    $factory->body(<<<EOD
-        <prod:RR437 xmlns:prod="http://rr.x-road.eu/producer">
-            <request>
-                <Isikukood>00000000000</Isikukood>
-            </request>
-        </prod:RR437>
-EOD;
-    )
+
+require_once 'vendor/autoload.php';
+
+use Raigu\XRoad\SoapEnvelope\SoapEnvelope;
+use Raigu\XRoad\SoapEnvelope\Client;
+use Raigu\XRoad\SoapEnvelope\ClientReference;
+use Raigu\XRoad\SoapEnvelope\Service;
+use Raigu\XRoad\SoapEnvelope\ServiceReference;
+use Raigu\XRoad\SoapEnvelope\ServiceRequest;
+use Raigu\XRoad\SoapEnvelope\UniqueId;
+
+$envelope = new SoapEnvelope(
+    new Client(
+        new ClientReference('EE/GOV/MEMBER1/SUBSYSTEM1')
+    ),
+    new Service(
+        new ServiceReference('EE/GOV/MEMBER2/SUBSYSTEM2/exampleService/v1')
+    ),
+    new ServiceRequest(
+        '<ns1:exampleService xmlns:ns1="http://producer.x-road.eu">' .
+        '<exampleInput>foo</exampleInput>' .
+        '</ns1:exampleService>'
+    ),
+    new UniqueId
 );
+
 
 echo $envelope->asStr();
 ```
 
-The method's `withBody` input parameter can be generated from
-WSDL using free tools like [WSDL Analyzer](http://www.wsdl-analyzer.com/) or [SOAP UI](https://www.soapui.org/). 
-The WSDL-s can be found in [X-Road catalog](https://x-tee.ee/catalogue/EE). 
+The above will output:
 
-See short (1:34) demo [video](https://youtu.be/ziQIwlTtPLA) how to acquire WSDL and generate a request body.
-
-## Builder methods
-| Factories   | Mandatory | Description                                                                                                                                                                                                                                                                           |
-|-------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| withService | Y         | service id. <br/>Format: `{xRoadInstance}/{memberClass}/{memberCode}/(subsystemCode}/{serviceCode}/{serviceVersion}`                                                                                                                                                                   |
-| withClient  | Y         | client id. <br/>Format: `{xRoadInstance}/{memberClass}/{memberCode}/(subsystemCode}`                                                                                                                                                                                                   |
-| withBody    | Y         | X-Road service request witch is but into the X-Road message body. See short [video](https://youtu.be/ziQIwlTtPLA) how you can find the WSDL based on service id and generate body from WSDL. If you use SoapUI make sure you do not miss the XML proper namespace definition. |
-| withUserId  | N         | natural person code who is initiating the request. Format: `{isoCountryCode2Alfa}/{personCode}`. Optional.                                                                                                                                                                            |
-| withRepresentedParty | N | Party who is represented by client. See [X-Road Third Party Representation Extension](https://x-tee.ee/docs/live/xroad/pr-third_party_representation_extension.html) for more info.<br/>Format: `[{partyClass}/]{partyCode}`. Optional. |
-
-## Making X-Road request
-
-In following samples assign your X-Road security server URL to `$securityServerUrl`.
-
-### Using Guzzle
-
-```php
-$client = new \Guzzle\Http\Client();
-$request = $client->post(
-    $securityServerUrl,
-    [ 
-        'Content-Type' => 'text/xml',
-        'SOAPAction' => ''
-    ],
-    $envelope
-);
-
-$response = $client->send($request);
-
-echo $response->getBody();
+```text
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:id="http://x-road.eu/xsd/identifiers"
+              xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+    <env:Header>
+        <xrd:client id:objectType="SUBSYSTEM">
+            <id:xRoadInstance>EE</id:xRoadInstance>
+            <id:memberClass>GOV</id:memberClass>
+            <id:memberCode>MEMBER1</id:memberCode>
+            <id:subsystemCode>SUBSYSTEM1</id:subsystemCode>
+        </xrd:client>
+        <xrd:service id:objectType="SERVICE">
+            <id:xRoadInstance>EE</id:xRoadInstance>
+            <id:memberClass>GOV</id:memberClass>
+            <id:memberCode>MEMBER2</id:memberCode>
+            <id:subsystemCode>SUBSYSTEM2</id:subsystemCode>
+            <id:serviceCode>exampleService</id:serviceCode>
+            <id:serviceVersion>v1</id:serviceVersion>
+        </xrd:service>
+        <xrd:id>0113072ef17ebb989e61a5b6c95f9efe</xrd:id>
+        <xrd:protocolVersion>4.0</xrd:protocolVersion>
+    </env:Header>
+    <env:Body>
+        <ns1:exampleService xmlns:ns1="http://producer.x-road.eu">
+            <exampleInput>foo</exampleInput>
+        </ns1:exampleService>
+    </env:Body>
+</env:Envelope>
 ```
 
-### Using curl
+The order of input parameters in `SoapEnvelope` constructor is not important.
 
-```php
-$ch = curl_init();
+There are more parameter types. See [Future test](tests/Feature/CreationOfXRoadRequestMessageTest.php), it demonstrates all options. 
 
-curl_setopt($ch, CURLOPT_URL, $securityServerUrl);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $envelope);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type' => 'text/xml',
-        'SOAPAction' => ''
-    ]);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+# Motivation
 
-$output = curl_exec($ch);
-
-curl_close($ch);
-
-echo $output;
-```
+This library has grown out from [raigu/x-road-soap-envelope-builder](https://github.com/raigu/x-road-soap-envelope-builder)
+in pursuit of refining code metrics. The lesson I learned is that be suspicious about Maintainability Index.
+"_size as a measure of maintainability has been underrated, and that the “sophisticated” maintenance metrics are overrated_"
+[source](https://avandeursen.com/2014/08/29/think-twice-before-using-the-maintainability-index/).
  
+
 # References
 
 * [X-Road Terms and Abbreviations](https://www.x-tee.ee/docs/live/xroad/terms_x-road_docs.html)
