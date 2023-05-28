@@ -10,8 +10,10 @@ PHP library for generating a SOAP envelope for X-Road request.
 
 # Requirements
 
-* php ^7.2
+* php ^8.0
 * DOM extension
+
+(For PHP ^PHP7.2 use version 1.1.1)
 
 # Installation
 
