@@ -28,5 +28,10 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.99"
+        }
     }
 }
